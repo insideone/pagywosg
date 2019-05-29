@@ -1,0 +1,108 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    schemas_directory: '%kernel.project_dir%/resources/schemas'
+    locale: 'en'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    _instanceof:
+        App\Framework\Renderer\RendererInterface:
+            tags: ['app.renderer']
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+        calls:
+            - method: setSchemaLoader
+            - method: setSerializer
+            - method: setEntityManager
+            - method: setReferenceLoader
+            - method: setPermissionsCollection
+            - method: setValidationErrorFormatter
+
+    App\EventListener\AuthenticationListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.authentication.success', method: 'process' }
+
+    App\EventListener\ExceptionListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'process' }
+        arguments:
+            $debug: '%kernel.debug%'
+
+    Opis\JsonSchema\Loaders\File:
+        arguments:
+            $prefix: ''
+            $dirs: ['%schemas_directory%/', '%schemas_directory%/types/']
+
+    GuzzleHttp\Client:
+
+    App\Command\:
+        resource: '../src/Command/*.php'
+        calls:
+            - method: setChangelog
+            - method: setEntityManager
+
+    App\Api\Steam\:
+        resource: '../src/Api/Steam/*InnerProvider.php'
+        calls:
+            - method: setApiKey
+              arguments:
+                  $apiKey: '%env(STEAM_API_KEY)%'
+            - method: setClient
+            - method: setSerializer
+
+    App\Api\Steam\PlayerSummariesProvider: ~
+
+    App\Service\:
+        resource: '../src/Service/*.php'
+
+    App\Framework\Renderer\RendererProvider:
+
+    App\Service\ResponseRenderer:
+
+
+    templating.engine.json:
+        alias: App\Service\ResponseRenderer
+
+    App\Renderer\:
+        resource: '../src/Renderer/*.php'
+        tags: ['app.renderer']
+
+    App\Security\Permission\:
+        resource: '../src/Security/Permission/*.php'
+        tags: ['rbac.permission.enum']
+
+    App\Security\PermissionsCollection:
+        public: true
+        class: App\Security\PermissionsCollection
+
+    App\Validation\ErrorFormatter: ~
+
+    Knojector\SteamAuthenticationBundle\Http\SteamApiClient:
+        alias: knojector.steam_authentication.http.steam_api_client
+
+    Knojector\SteamAuthenticationBundle\Factory\UserFactory:
+        alias: knojector.steam_authentication.factory.user_factory
+
+    Knojector\SteamAuthenticationBundle\Security\User\SteamUserProvider:
+        alias: knojector.steam_authentication.security.user.steam_user_provider
+
+    Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter:
+        alias: serializer.name_converter.camel_case_to_snake_case

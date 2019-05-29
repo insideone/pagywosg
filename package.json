@@ -1,0 +1,28 @@
+{
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@fortawesome/fontawesome-free": "^5.8.1",
+    "@symfony/webpack-encore": "^0.24.0",
+    "axios": "^0.18.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "marked": "^0.6.2",
+    "normalize.css": "^8.0.1",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.0.11",
+    "vue-router": "^3.0.6",
+    "vue-template-compiler": "^2.6.10",
+    "vuex": "^3.1.0"
+  },
+  "scripts": {
+    "container-start-dev": "npm install && encore dev --watch",
+    "container-start-prod": "npm install && encore prod"
+  },
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "normalizr": "^3.3.0",
+    "qs": "^6.7.0",
+    "vue-cookie": "^1.1.4"
+  }
+}

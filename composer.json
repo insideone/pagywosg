@@ -1,0 +1,97 @@
+{
+    "type": "project",
+    "description": "Tool for \"Play a game you won on SG\" events. All progress of these events is being tracked here",
+    "authors": [
+        {"name": "Ardiffaz"},
+        {"name": "insideone", "role": "maintainer"},
+        {"name": "MouseWithBeer"}
+    ],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "doctrine/doctrine-fixtures-bundle": "^3.1",
+        "fabpot/goutte": "^3.2",
+        "fresh/doctrine-enum-bundle": "^6.3",
+        "fxp/security-bundle": "dev-master#0cedbede12b1f0ddb3340f62293aa153f8f1758e",
+        "fxp/doctrine-extra": "dev-master#d0be35318a9f59e7281e7bd645991128fb3b732a",
+        "fxp/doctrine-extensions": "dev-master#0b2fdea9d80d162f8d2c45d48af84727b12a1715",
+        "guzzlehttp/guzzle": "^6.3",
+        "knojector/steam-authentication-bundle": "^1.0",
+        "opis/json-schema": "^1.0",
+        "sensio/framework-extra-bundle": "^5.3",
+        "symfony-bundles/json-request-bundle": "^2.0",
+        "symfony/console": "4.2.*",
+        "symfony/debug-pack": "^1.0",
+        "symfony/dotenv": "4.2.*",
+        "symfony/flex": "^1.1",
+        "symfony/framework-bundle": "4.2.*",
+        "symfony/lock": "4.2.*",
+        "symfony/orm-pack": "^1.0",
+        "symfony/property-info": "4.2.*",
+        "symfony/security-bundle": "4.2.*",
+        "symfony/serializer": "4.2.*",
+        "symfony/templating": "4.2.*",
+        "symfony/translation": "4.2.*",
+        "symfony/yaml": "4.2.*"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "from-scratch": [
+            "composer install",
+            "console doctrine:schema:drop --force",
+            "console doctrine:schema:update --force",
+            "console doctrine:fixtures:load --quiet"
+        ],
+        "up": [
+            "composer install",
+            "console doctrine:schema:update --force"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "4.2.*"
+        }
+    }
+}

@@ -1,0 +1,140 @@
+@import "../mixins";
+
+.form{
+
+  &__block{
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    &--half{
+      width: 50%;
+    }
+
+    &--multiple{
+      margin-bottom: 12px;
+    }
+
+    &--nowrap{
+      flex-wrap: nowrap;
+    }
+
+    &--inlined{
+      padding-right: 14px;
+    }
+
+    &--mb0{
+      margin-bottom: 0;
+    }
+  }
+
+  &__subblock{
+    width: 180px;
+  }
+
+  &__line-block{
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__divider{
+    padding: 0 20px;
+    font-weight: bold;
+  }
+
+  &__label{
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+
+    &--small{
+      font-size: 13px;
+    }
+  }
+
+  &__mark-required{
+    color: @color-red;
+    font-size: 1.2em;
+  }
+
+  &__input, &__textarea{
+    border: none;
+    border-bottom: 2px solid @color-blue;
+    background: fade(@color-light-blue, 20%);
+    font-size: 14px;
+    color: @color-dark;
+    box-sizing: border-box;
+    padding: 6px 12px;
+    border-radius: 4px;
+    width: 100%;
+    transition: color 0.3s, border 0.3s;
+
+    &:focus{
+      border-bottom-color: @color-dark-blue;
+    }
+  }
+
+  &__input--tiny{
+    width: 54px;
+    padding: 6px 5px;
+    text-align: center;
+    margin-right: 4px;
+  }
+
+  &__textarea{
+    resize: vertical;
+    min-height: 180px;
+    max-height: 600px;
+
+    &--small{
+      min-height: 52px;
+      height: 52px;
+      max-height: 150px;
+    }
+  }
+
+  &__submit-block{
+    text-align: right;
+    border-top: 1px solid @color-blue;
+    padding-top: 16px;
+  }
+  
+  &__select{
+    height: 32px;
+    font-family: sans-serif;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__preview-block{
+    background: fade(@color-light-blue, 10%);
+    width: 100%;
+    padding: 6px 10px;
+    margin-top: 10px;
+  }
+
+  &__preview-head{
+    font-size: 13px;
+    font-weight: bold;
+    font-style: italic;
+    color: @color-dark-blue;
+    margin-bottom: 6px;
+  }
+
+  &__preview-content{
+
+  }
+
+  &__note{
+    font-size: 12px;
+    color: @color-gray;
+    margin-bottom: 10px;
+  }
+
+}

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+php_conf_folder=/usr/local/etc/php/conf.d
+xdebug_filename=docker-php-ext-xdebug.ini
+xdebug_file="$php_conf_folder/$xdebug_filename"
+xdebug_disabled_file="$php_conf_folder/$xdebug_filename.off"
+
+backendExec() {
+    docker-compose exec -uroot backend "$@"
+}
+
+xdebug_on=$(backendExec ls -la "$php_conf_folder" | fgrep "$xdebug_filename" | fgrep -v off | wc -l)
+
+case $@ in
+     off)
+          if [[ "$xdebug_on" = 1 ]]; then
+              backendExec mv -f $xdebug_file $xdebug_disabled_file
+              docker-compose restart backend
+          else
+              echo "xdebug is already off";
+          fi
+          ;;
+     on)
+          if [[ "$xdebug_on" = 0 ]]; then
+              backendExec mv -f $xdebug_disabled_file $xdebug_file
+              docker-compose restart backend
+          else
+              echo "xdebug is already on"
+          fi
+          ;;
+     **)
+          echo "Actions supported: off, on"
+esac

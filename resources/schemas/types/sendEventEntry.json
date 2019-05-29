@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "/sendEventEntry.json",
+  "type": "object",
+  "properties": {
+    "category": {"$ref": "./entity.json"},
+    "notes": {"type": "string"},
+    "playStatus": {"type": "string", "enum": ["completed", "unfinished", "beaten"]}
+  },
+  "required": ["category", "playStatus"]
+}

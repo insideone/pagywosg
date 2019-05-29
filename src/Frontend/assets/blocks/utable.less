@@ -1,0 +1,303 @@
+@import "../mixins";
+
+.utable{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &__hrow{
+    display: flex;
+    align-items: stretch;
+    background: fade(@color-blue, 30%);
+    border-bottom: 1px solid @color-blue;
+    border-top: 1px solid @color-blue;
+  }
+
+  &__hcell{
+    padding: 10px 12px 10px 0;
+    box-sizing: border-box;
+    text-align: center;
+
+    &:last-child{
+      margin-right: 194px;
+
+      @media (max-width: 1120px){
+        margin-right: 0;
+      }
+    }
+  }
+
+  &__col-num{
+    width: 42px;
+    flex-shrink: 0;
+  }
+
+  &__col-player, &__col-game{width: 190px;}
+  &__col-status{
+    width: 130px;
+    flex-shrink: 0;
+  }
+
+  &__col-stats{
+    width: 220px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  &__col-subcat{
+    width: 180px;
+    margin-right: auto;
+  }
+
+  &__col-select{
+    width: 300px;
+    margin-right: auto;
+    flex-shrink: 0;
+  }
+
+  &__col-stats-edit{
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 300px;
+    box-sizing: border-box;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  &__heading{
+    color: @color-dark-blue;
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  &__htext-long{
+    display: block;
+  }
+
+  &__col-num{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &__filter{
+    padding-top: 4px;
+    max-width: 180px;
+  }
+
+  &__input{
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 4px;
+    background: #f1f2f3;
+    border-bottom: 2px solid @color-light-blue;
+    padding: 4px 6px;
+    font-size: 10px;
+    color: @color-dark-blue;
+  }
+
+  &__row{
+    border-bottom: 1px solid @color-blue;
+    transition: background 0.3s;
+    box-sizing: border-box;
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    &:hover{
+      background: fade(@color-blue, 7%);
+    }
+    
+    &--end{
+      justify-content: flex-end;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    &--mine{
+      border-left: 3px solid @color-blue;
+
+      &:after{
+        content: 'My entry';
+        display: block;
+        background: @color-blue;
+        color: @color-light;
+        font-size: 8px;
+        padding: 2px 4px 2px 2px;
+        border-radius: 0 0 4px 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+
+      &:hover:after{
+        opacity: 0.3;
+      }
+    }
+  }
+
+  &__row-left{
+    flex-grow: 1;
+  }
+
+  &__row-right{
+    flex-shrink: 0;
+    width: 194px;
+    box-sizing: border-box;
+    padding-right: 10px;
+    margin-left: 16px;
+    text-align: right;
+  }
+
+  &__line{
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+
+    &--next{
+      padding-left: 42px;
+    }
+
+    &--spaced{
+      justify-content: space-between;
+    }
+  }
+
+  &__num{
+    font-size: 11px;
+    text-align: center;
+  }
+
+  &__player{
+    box-sizing: border-box;
+    padding-right: 20px;
+    flex-shrink: 0;
+  }
+
+  &__username{
+    margin-bottom: 6px;
+  }
+
+  &__game-title{
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: auto;
+  }
+
+  &__game-pic{
+    width: 184px;
+    height: 69px;
+  }
+
+  &__game-img{
+    width: 100%;
+  }
+
+  &__controls{
+    text-align: right;
+    margin-bottom: 6px;
+  }
+
+  &__link-control{
+    font-size: 12px;
+    margin-right: 12px;
+    display: inline-block;
+    color: @color-blue;
+    cursor: pointer;
+
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+
+  &__play-stats{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: auto;
+  }
+
+  &__play-stat{
+    & + &{
+      margin-left: 16px;
+    }
+  }
+
+  &__stats-before{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    color: @color-gray;
+    padding-top: 5px;
+    border-top: 1px solid fade(@color-gray, 60%);
+    margin-top: 5px;
+    font-size: 12px;
+  }
+
+  &__stats-before-header{
+    font-size: 12px;
+    font-style: italic;
+    color: @color-gray;
+    margin-bottom: 4px;
+    width: 100%;
+  }
+
+  &__status{
+    font-weight: bold;
+    text-align: center;
+
+    &--unfinished{
+      color: @color-gray;
+    }
+
+    &--beaten{
+      color: @color-beaten;
+    }
+
+    &--completed{
+      color: @color-completed;
+    }
+  }
+
+  &__notes{
+    width: auto;
+    font-size: 12px;
+    color: @color-gray;
+    padding: 0 0 0 42px;
+  }
+
+  &__sel-game{
+    font-style: italic;
+    padding-left: 10px;
+  }
+
+  &__game-error{
+    color: @color-red;
+    background: fade(@color-red, 20%);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  &__errors{
+    padding-left: 10px;
+  }
+
+  &__verified{
+    font-size: 12px;
+    font-style: italic;
+    color: @color-dark-blue;
+    padding: 0 10px;
+  }
+
+}

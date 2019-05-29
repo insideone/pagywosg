@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "/updateEventEntry.json",
+  "allOf": [
+    {"$ref": "./types/sendEventEntry.json"},
+    {
+      "type": "object",
+      "properties": {
+        "playTime": {"$ref": "./types/nullableInteger.json"},
+        "playTimeInitial": {"$ref": "./types/nullableInteger.json"},
+        "achievementsCnt": {"$ref": "./types/nullableInteger.json"},
+        "achievementsCntInitial": {"$ref": "./types/nullableInteger.json"}
+      },
+      "not": {
+        "required": ["player"]
+      }
+    }
+  ]
+}

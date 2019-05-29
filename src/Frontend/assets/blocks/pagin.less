@@ -1,0 +1,18 @@
+@import "../mixins";
+
+.pagin{
+  display: flex;
+  padding: 5px 0;
+
+  &__link{
+    cursor: pointer;
+  }
+
+  &__link, &__cur{
+    padding: 0 5px;
+  }
+
+  &__cur{
+    color: @color-light-pink;
+  }
+}

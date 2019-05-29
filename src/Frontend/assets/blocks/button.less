@@ -1,0 +1,36 @@
+@import "../mixins";
+
+.button{
+  font-size: 16px;
+  text-decoration: none;
+  color: @color-pink;
+  border: 2px solid @color-pink;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background: fade(@color-light-pink, 30%);
+  padding: 5px 14px;
+  transition: color 0.3s, border 0.3s;
+  cursor: pointer;
+  display: inline-block;
+
+  &:hover{
+    color: @color-red;
+    border-color: @color-red;
+  }
+
+  &--submit{
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px 50px;
+  }
+
+  &--cancel{
+    border-color: @color-light-blue;
+    color: @color-blue;
+    background: fade(@color-gray, 30%);
+  }
+
+  &--margin{
+    margin-bottom: 14px;
+  }
+}

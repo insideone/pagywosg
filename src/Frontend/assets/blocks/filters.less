@@ -1,0 +1,38 @@
+@import "../mixins";
+
+.filters{
+  display: flex;
+
+  &__item{
+    text-align: center;
+    border: 1px solid @color-blue;
+    border-left-width: 0;
+    background: fade(@color-light-pink, 30%);
+    color: @color-pink;
+    //text-shadow: 1px 1px 0 @color-light;
+    font-size: 14px;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s, color 0.3s;
+
+    &:first-child{
+      border-left-width: 1px;
+      border-radius: 4px 0 0 4px;
+    }
+
+    &:last-child{
+      border-radius: 0 4px 4px 0;
+    }
+
+    &:hover{
+      background: fade(@color-light-pink, 60%)
+    }
+
+    &--selected, &--selected:hover{
+      color: @color-light;
+      background: @color-blue;
+    }
+  }
+}

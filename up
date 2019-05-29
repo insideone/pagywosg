@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [[ -f .env.local ]]; then
+    set -a
+    . ./.env.local
+    set +a
+fi
+
+docker-compose up $@

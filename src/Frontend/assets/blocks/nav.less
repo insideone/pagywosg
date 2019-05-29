@@ -1,0 +1,24 @@
+@import "../mixins";
+
+.nav{
+  display: flex;
+  align-items: stretch;
+
+  &__link{
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 15px;
+    min-height: 50px;
+    border: 0 solid transparent;
+    transition: color 0.3s, border-color 0.3s, border-width 0.1s;
+
+    &:hover{
+      border-bottom: 3px solid @color-light-pink;
+    }
+
+    &.router-link-exact-active{
+      border-bottom: 3px solid @color-pink;
+    }
+  }
+}

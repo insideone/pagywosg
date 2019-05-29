@@ -1,0 +1,63 @@
+@import "../mixins";
+
+.leaderboard{
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 800px;
+  margin-bottom: 50px;
+
+  &__th, &__td{
+    border: 1px solid @color-golden;
+    text-align: center;
+    padding: 10px 10px;
+    box-sizing: border-box;
+  }
+
+  &__num, &__total-num{
+    width: 60px;
+    padding-left: 0;
+    padding-right: 0;
+    color: @color-gray;
+  }
+
+  &__th{
+    font-size: 14px;
+    font-weight: normal;
+    color: @color-dark-blue;
+    vertical-align: center;
+  }
+
+  &__td{
+    vertical-align: baseline;
+  }
+
+  &__user{
+    text-align: left;
+  }
+
+  &__username{
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  &__user-link{
+    display: inline-block;
+    font-size: 13px;
+    color: @color-blue;
+
+    & + &{
+      margin-left: 6px;
+    }
+  }
+
+  &__total{
+    font-weight: bold;
+    color: @color-dark-blue;
+  }
+
+  &__total-num{
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+}

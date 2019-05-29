@@ -1,0 +1,20 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        steam_user_provider:
+            id: Knojector\SteamAuthenticationBundle\Security\User\SteamUserProvider
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            pattern: ^/
+            provider: steam_user_provider
+            steam: true
+            logout:
+              path:   /logout
+              target: /
+              invalidate_session: true
+            access_denied_handler: App\Security\AccessDeniedHandler
+            anonymous_role: true

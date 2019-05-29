@@ -1,0 +1,34 @@
+@import "../mixins";
+
+.icon-fa{
+  text-align: center;
+  font-weight: normal;
+
+  &--inline{
+    margin-right: 4px;
+  }
+
+  &--sized20{
+    width: 20px;
+  }
+
+  &--golden{
+    color: @color-golden;
+  }
+
+  &--blue{
+    color: @color-blue;
+  }
+
+  &--lightblue{
+    color: @color-light-blue;
+  }
+
+  &--inactive, &--gray{
+    color: @color-gray;
+  }
+
+  &--inactive{
+    opacity: 0.5;
+  }
+}

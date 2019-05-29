@@ -1,0 +1,23 @@
+fxp_security:
+  anonymous_role:
+    enabled: true
+  expression:
+    override_voter:      true
+    functions:
+      is_granted:      true
+  annotations:
+    security: true
+  role_hierarchy:
+    enabled: true
+  security_voter:
+    role_security_identity: true
+  doctrine:
+    orm:
+      listeners:
+        role_hierarchy: true
+  permissions:
+    # all managed entites MUST be here because this is how package works (see PermissionManager::doIsManaged)
+    App\Entity\Event: ~
+    App\Entity\EventEntry: ~
+    App\Entity\Role: ~
+    App\Entity\User: ~
