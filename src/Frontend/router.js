@@ -18,7 +18,7 @@ const appRouter = new Router({
             name: 'index',
             path: '/',
             component: IndexPage,
-            meta: {title: 'Hello World'}
+            meta: {title: 'Welcome!'}
         },
         {
             name: 'events',
