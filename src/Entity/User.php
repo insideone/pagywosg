@@ -44,14 +44,14 @@ class User implements SteamUserInterface, UserInterface
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $communityVisibilityState;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $profileState;
 
@@ -66,14 +66,14 @@ class User implements SteamUserInterface, UserInterface
     /**
      * @var DateTime
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $lastLogOff;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $commentPermission;
 
@@ -96,7 +96,7 @@ class User implements SteamUserInterface, UserInterface
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $personaState;
 
