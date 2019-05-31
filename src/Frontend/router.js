@@ -3,13 +3,14 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 
-const IndexPage = () => import( /* webpackChunkName: "index_page" */ './pages/Index.vue');
-const EventsPage = () => import( /* webpackChunkName: "events_page" */ './pages/EventsPage.vue');
-const NewEventPage = () => import( /* webpackChunkName: "new_event_page" */ './pages/NewEventPage.vue');
-const EventPage = () => import( /* webpackChunkName: "event_detail" */ './pages/EventPage.vue');
-const LeaderboardPage = () => import( /* webpackChunkName: "event_leaderboards" */ './pages/LeaderboardPage.vue');
-const UsersPage = () => import( /* webpackChunkName: "users_page" */ './pages/UsersPage.vue');
-const HelpFormattingPage = () => import( /* webpackChunkName: "help_formatting" */ './pages/HelpFormatting.vue');
+const IndexPage = () => import( /* webpackChunkName: "index_page" */ './pages/Index.vue').then(m => m.default);
+const EventsPage = () => import( /* webpackChunkName: "events_page" */ './pages/EventsPage.vue').then(m => m.default);
+const NewEventPage = () => import( /* webpackChunkName: "new_event_page" */ './pages/NewEventPage.vue').then(m => m.default);
+const EventPage = () => import( /* webpackChunkName: "event_detail" */ './pages/EventPage.vue').then(m => m.default);
+const LeaderboardPage = () => import( /* webpackChunkName: "event_leaderboards" */ './pages/LeaderboardPage.vue').then(m => m.default);
+const UsersPage = () => import( /* webpackChunkName: "users_page" */ './pages/UsersPage.vue').then(m => m.default);
+const HelpFormattingPage = () => import( /* webpackChunkName: "help_formatting" */ './pages/HelpFormatting.vue').then(m => m.default);
+
 
 const appRouter = new Router({
     mode: 'history',
