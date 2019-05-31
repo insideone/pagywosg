@@ -3,13 +3,13 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 
-const IndexPage = () => import( /* webpackChunkName: "index_page" */ './pages/Index.vue').then(m => m.default);
-const EventsPage = () => import( /* webpackChunkName: "events_page" */ './pages/EventsPage.vue').then(m => m.default);
-const NewEventPage = () => import( /* webpackChunkName: "new_event_page" */ './pages/NewEventPage.vue').then(m => m.default);
-const EventPage = () => import( /* webpackChunkName: "event_detail" */ './pages/EventPage.vue').then(m => m.default);
-const LeaderboardPage = () => import( /* webpackChunkName: "event_leaderboards" */ './pages/LeaderboardPage.vue').then(m => m.default);
-const UsersPage = () => import( /* webpackChunkName: "users_page" */ './pages/UsersPage.vue').then(m => m.default);
-const HelpFormattingPage = () => import( /* webpackChunkName: "help_formatting" */ './pages/HelpFormatting.vue').then(m => m.default);
+import IndexPage from './pages/Index.vue';
+import EventsPage from './pages/EventsPage.vue';
+import NewEventPage from './pages/NewEventPage.vue';
+import EventPage from './pages/EventPage.vue';
+import LeaderboardPage from './pages/LeaderboardPage.vue';
+import UsersPage from './pages/UsersPage.vue';
+import HelpFormattingPage from './pages/HelpFormatting.vue';
 
 
 const appRouter = new Router({
