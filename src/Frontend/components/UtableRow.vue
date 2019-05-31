@@ -250,25 +250,27 @@
                         </div>
                     </div>
 
-                    <div class="form__block utable__col-status">
-                        <label class="form__label" for="p_status">
-                            <i class="icon-fa fas fa-clipboard-check"></i>
-                            Played Status:
-                        </label>
-                        <select
-                            v-model="editValues.playStatus"
-                            required
-                            name="p_status"
-                            id="p_status"
-                            class="form__select"
-                            title="Played status (Unfinished/Beaten/Completed)"
-                        >
-                            <option
-                                v-for="(playStatus, key) in playStatuses"
-                                :key="'play_status_'+key"
-                                :value="playStatus.id"
-                            >{{playStatus.name}}</option>
-                        </select>
+                    <div class="utable__col-status">
+                        <div class="form__block">
+                            <label class="form__label" for="p_status">
+                                <i class="icon-fa fas fa-clipboard-check"></i>
+                                Played Status:
+                            </label>
+                            <select
+                                v-model="editValues.playStatus"
+                                required
+                                name="p_status"
+                                id="p_status"
+                                class="form__select"
+                                title="Played status (Unfinished/Beaten/Completed)"
+                            >
+                                <option
+                                    v-for="(playStatus, key) in playStatuses"
+                                    :key="'play_status_'+key"
+                                    :value="playStatus.id"
+                                >{{playStatus.name}}</option>
+                            </select>
+                        </div>
                     </div>
 
                 </div>
