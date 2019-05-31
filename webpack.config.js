@@ -3,8 +3,8 @@ var Encore = require('@symfony/webpack-encore');
 Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
-    //.enableSingleRuntimeChunk()
-    .disableSingleRuntimeChunk()
+    .enableSingleRuntimeChunk()
+    //.disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     //.enableSourceMaps(!Encore.isProduction())
     .enableSourceMaps(false)
