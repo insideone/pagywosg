@@ -143,6 +143,7 @@
             position: relative;
             margin: 0 -16px -12px;
             padding: 0 16px 12px;
+            min-height: 50px;
 
             &:after{
                 content: '';

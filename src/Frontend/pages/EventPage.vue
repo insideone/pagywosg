@@ -84,7 +84,7 @@
                 </div>
             </div>
 
-            <div class="event-detail__descr">
+            <div class="event-detail__descr" v-if="eventUnlocksCompiled">
                 <div
                     :class="['event-detail__descr-block', {'_active': true}]"
                 >
