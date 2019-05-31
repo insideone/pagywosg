@@ -19,67 +19,69 @@
 
             <div class="utable__line">
                 <div class="utable__num utable__col-num">{{eventEntriesCnt+1}}</div>
-                <div class="utable__col-select form__block form__block--inlined">
-                    <span class="form__label">
+                <div class="utable__col-select">
+                    <div class="form__block form__block--inlined">
+                        <span class="form__label">
                         <i class="icon-fa fas fa-user"></i>
                         Player:
                     </span>
-                    <a
-                        v-if="selectedUser"
-                        :href="selectedUser.profileUrl"
-                        target="_blank"
-                        class="utable__username"
-                    >{{selectedUser.profileName}}</a>
-
-                    <div
-                        v-if="createHostedEntryAllowed"
-                        class="form__block form__block--mb0"
-                    >
-
                         <a
-                            v-if="!isUserSearchFormShown && (selectedUser.steamId !== loggedUser.steamId)"
-                            @click.prevent="setUserMyself"
-                            class="utable__link-control"
+                            v-if="selectedUser"
+                            :href="selectedUser.profileUrl"
+                            target="_blank"
+                            class="utable__username"
+                        >{{selectedUser.profileName}}</a>
+
+                        <div
+                            v-if="createHostedEntryAllowed"
+                            class="form__block form__block--mb0"
                         >
-                            <i class="icon-fa icon-fa--inline fas fa-user"></i>Select myself
-                        </a>
 
-                        <a
-                            v-if="!isUserSearchFormShown"
-                            @click.prevent="showUserSearchForm"
-                            class="utable__link-control"
-                        >
-                            <i class="icon-fa icon-fa--inline fas fa-user-secret"></i>Select someone else
-                        </a>
+                            <a
+                                v-if="!isUserSearchFormShown && (selectedUser.steamId !== loggedUser.steamId)"
+                                @click.prevent="setUserMyself"
+                                class="utable__link-control"
+                            >
+                                <i class="icon-fa icon-fa--inline fas fa-user"></i>Select myself
+                            </a>
 
-                        <template v-else>
-                            <div class="form__label form__label--small">
-                                <i class="icon-fa fas fa-edit"></i>
-                                Select another user (by Steam profile link, Steam ID or user name)
-                                &nbsp;
-                                <a
-                                    @click.prevent="hideUserSearchForm"
-                                    class="utable__link-control"
-                                >
-                                    <i class="icon-fa icon-fa--inline fas fa-times"></i>Cancel
-                                </a>
-                            </div>
+                            <a
+                                v-if="!isUserSearchFormShown"
+                                @click.prevent="showUserSearchForm"
+                                class="utable__link-control"
+                            >
+                                <i class="icon-fa icon-fa--inline fas fa-user-secret"></i>Select someone else
+                            </a>
 
-                            <input
-                                v-model="userSearchString"
-                                type="text"
-                                name="user_search"
-                                id="user_search"
-                                class="form__input"
-                                placeholder="Steam profile link, Steam ID or user name..."
-                            />
-                            <user-variants
-                                ref="searchUser"
-                                :searchString="userSearchString"
-                                @user-selected="selectUser"
-                            ></user-variants>
-                        </template>
+                            <template v-else>
+                                <div class="form__label form__label--small">
+                                    <i class="icon-fa fas fa-edit"></i>
+                                    Select another user (by Steam profile link, Steam ID or user name)
+                                    &nbsp;
+                                    <a
+                                        @click.prevent="hideUserSearchForm"
+                                        class="utable__link-control"
+                                    >
+                                        <i class="icon-fa icon-fa--inline fas fa-times"></i>Cancel
+                                    </a>
+                                </div>
 
+                                <input
+                                    v-model="userSearchString"
+                                    type="text"
+                                    name="user_search"
+                                    id="user_search"
+                                    class="form__input"
+                                    placeholder="Steam profile link, Steam ID or user name..."
+                                />
+                                <user-variants
+                                    ref="searchUser"
+                                    :searchString="userSearchString"
+                                    @user-selected="selectUser"
+                                ></user-variants>
+                            </template>
+
+                        </div>
                     </div>
                 </div>
                 <div class="form__block">
@@ -114,23 +116,25 @@
             </div>
 
             <div class="utable__line utable__line--next">
-                <div class="utable__category utable__col-select form__block form__block--inlined">
-                    <label class="form__label" for="add_category">
-                        <i class="icon-fa far fa-flag"></i>
-                        Subcategory:
-                    </label>
-                    <select
-                        v-model="selectedCategory"
-                        required
-                        name="add_category" id="add_category" class="form__select"
-                        title="The subcategory for the game to qualify for the event"
-                    >
-                        <option
-                            v-for="(category, key) in gameCategories"
-                            :key="'add_category_'+key"
-                            :value="category.id"
-                        >{{category.name}}</option>
-                    </select>
+                <div class="utable__category utable__col-select">
+                    <div class="form__block form__block--inlined">
+                        <label class="form__label" for="add_category">
+                            <i class="icon-fa far fa-flag"></i>
+                            Subcategory:
+                        </label>
+                        <select
+                            v-model="selectedCategory"
+                            required
+                            name="add_category" id="add_category" class="form__select"
+                            title="The subcategory for the game to qualify for the event"
+                        >
+                            <option
+                                v-for="(category, key) in gameCategories"
+                                :key="'add_category_'+key"
+                                :value="category.id"
+                            >{{category.name}}</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form__block form__block--inlined">
@@ -146,25 +150,27 @@
                     ></textarea>
                 </div>
 
-                <div class="utable__col-status form__block">
-                    <label class="form__label" for="add_status">
-                        <i class="icon-fa fas fa-clipboard-check"></i>
-                        Played Status:
-                    </label>
-                    <select
-                        v-model="selectedPlayStatus"
-                        required
-                        name="add_status"
-                        id="add_status"
-                        class="form__select"
-                        title="Played status (Unfinished/Beaten/Completed)"
-                    >
-                        <option
-                            v-for="(playStatus, key) in playStatuses"
-                            :key="'add_play_status_'+key"
-                            :value="playStatus.id"
-                        >{{playStatus.name}}</option>
-                    </select>
+                <div class="utable__col-status">
+                    <div class="form__block">
+                        <label class="form__label" for="add_status">
+                            <i class="icon-fa fas fa-clipboard-check"></i>
+                            Played Status:
+                        </label>
+                        <select
+                            v-model="selectedPlayStatus"
+                            required
+                            name="add_status"
+                            id="add_status"
+                            class="form__select"
+                            title="Played status (Unfinished/Beaten/Completed)"
+                        >
+                            <option
+                                v-for="(playStatus, key) in playStatuses"
+                                :key="'add_play_status_'+key"
+                                :value="playStatus.id"
+                            >{{playStatus.name}}</option>
+                        </select>
+                    </div>
                 </div>
 
             </div>
