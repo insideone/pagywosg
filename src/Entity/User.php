@@ -163,7 +163,7 @@ class User implements SteamUserInterface, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setCommunityVisibilityState(int $state)
+    public function setCommunityVisibilityState(?int $state)
     {
         $this->communityVisibilityState = $state;
     }
@@ -179,7 +179,7 @@ class User implements SteamUserInterface, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setProfileState(int $state)
+    public function setProfileState(?int $state)
     {
         $this->profileState = $state;
     }
@@ -211,7 +211,7 @@ class User implements SteamUserInterface, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setLastLogOff(int $lastLogOff)
+    public function setLastLogOff(?int $lastLogOff)
     {
         $lastLogOffDate = new DateTime();
         $lastLogOffDate->setTimestamp($lastLogOff);
@@ -229,7 +229,7 @@ class User implements SteamUserInterface, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setCommentPermission(int $permission)
+    public function setCommentPermission(?int $permission)
     {
         $this->commentPermission = $permission;
     }
@@ -277,7 +277,7 @@ class User implements SteamUserInterface, UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setPersonaState(? int $state)
+    public function setPersonaState(?int $state)
     {
         $this->personaState = $state;
     }
