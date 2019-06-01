@@ -55,7 +55,17 @@ export default new Vuex.Store({
 
         getRole: state => id => state.roles[id],
 
-        getLeaderboard: state => state.leaderboard,
+        getLeaderboard: state => {
+            let leaderboard = state.leaderboard;
+
+            leaderboard.sort((a, b) => {
+                if (a.hours === b.hours)
+                    return 0;
+                return (a.hours > b.hours) ? -1 : 1;
+            });
+
+            return leaderboard;
+        },
 
         getPermission: state => (permName) => state.permissions[permName],
 
