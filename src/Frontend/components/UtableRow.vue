@@ -195,7 +195,7 @@
                                     <i class="icon-fa icon-fa--inline icon-fa--gray fas fa-clock"></i>
                                 </label>
                                 <input
-                                    v-model.number="editValues.playTimeFormatted"
+                                    v-model="editValues.playTimeFormatted"
                                     type="text"
                                     name="p_playtime"
                                     id="p_playtime"
@@ -238,7 +238,7 @@
                                     <i class="icon-fa icon-fa--inline icon-fa--lightblue fas fa-clock"></i>
                                 </label>
                                 <input
-                                    v-model.number="editValues.playTimeInitialFormatted"
+                                    v-model="editValues.playTimeInitialFormatted"
                                     type="text"
                                     name="playtime_initial"
                                     id="playtime_initial"
@@ -455,6 +455,13 @@
                 this.errors = [];
             },
 
+            parsePlayTimeInHours(minutes) {
+                minutes = minutes.toString().replace(',', '.');
+                let hours = parseFloat(minutes) * 60;
+
+                return parseInt(hours);
+            },
+
             submitEdits() {
                 this.errors = [];
 
@@ -464,9 +471,9 @@
                     category: {id: this.editValues.category},
                     playStatus: this.editValues.playStatus,
                     achievementsCnt: parseInt(this.editValues.achievementsCnt),
-                    playTime: parseInt(this.editValues.playTimeFormatted) * 60,
+                    playTime: this.parsePlayTimeInHours(this.editValues.playTimeFormatted),
                     achievementsCntInitial: parseInt(this.editValues.achievementsCntInitial),
-                    playTimeInitial: parseInt(this.editValues.playTimeInitialFormatted) * 60,
+                    playTimeInitial: this.parsePlayTimeInHours(this.editValues.playTimeInitialFormatted),
                     notes: this.editValues.notes
                 };
 
