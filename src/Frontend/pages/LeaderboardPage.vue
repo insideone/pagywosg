@@ -69,6 +69,17 @@
                 </tr>
             </table>
 
+            <div
+                v-if="showTemplate"
+                class="form lb-page__template"
+            >
+                <label for="lb-template" class="form__label">Markdown format for SG:</label>
+                <textarea
+                    id="lb-template"
+                    class="form__textarea"
+                >{{mdTemplate}}</textarea>
+            </div>
+
         </template>
 
     </div>
@@ -91,7 +102,8 @@
         },
         computed: {
             ...mapGetters({
-                leaderboard: 'getLeaderboard'
+                leaderboard: 'getLeaderboard',
+                showTemplate: 'isReadingAnyUserAllowed' //TODO: change permission to sth more appropriate
             }),
 
             eventId: function () {
@@ -120,6 +132,21 @@
                 });
 
                 return total;
+            },
+
+            mdTemplate: function () {
+                let mdTemplate = 'SG username | Number of achievements | Hours of Playtime | Games beaten\n' +
+                    ':-: | :-: | :-: | :-:\n';
+
+                this.leaderboard.forEach((lbEntry) => {
+                    let userName = this.users[lbEntry.player].profileName;
+
+                    mdTemplate += `${userName} | ${lbEntry.achievements} | ${lbEntry.hours} | ${lbEntry.beaten}\n`;
+                });
+
+                mdTemplate += `**Total** | **${this.totalStats.achievements}** | **${this.totalStats.hours}** | **${this.totalStats.beaten}**\n`;
+
+                return mdTemplate;
             }
         },
         created() {
@@ -142,6 +169,10 @@
             font-size: 18px;
             display: inline-block;
             margin-bottom: 14px;
+        }
+
+        &__template{
+            max-width: 800px;
         }
     }
 </style>
