@@ -27,8 +27,7 @@ but put your steam profile nickname or steamId instead of `insideone`
 You can update the site without wiping your user data:
 
 ```bash
-git pull origin
-docker-compose exec backend composer up
+./update
 ```
 
 # More docs
@@ -38,5 +37,3 @@ docker-compose exec backend composer up
   * [Validation](docs/backend/validation.md)
   * [Security](docs/backend/security.md)
   * [Xdebug](docs/backend/xdebug.md)
-* Frontend
-  * TODO

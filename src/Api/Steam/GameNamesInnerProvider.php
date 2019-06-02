@@ -5,24 +5,40 @@ namespace App\Api\Steam;
 use App\Api\Steam\Schema\GetAppListResultApp;
 use App\Framework\Exceptions\UnexpectedResponseException;
 use App\Framework\Steam\Api\JsonResponseApiProvider;
+use DateTime;
 use GuzzleHttp\Exception\GuzzleException;
 
 class GameNamesInnerProvider extends JsonResponseApiProvider
 {
     /**
+     * @param DateTime $modifiedSince
      * @return GetAppListResultApp[]
-     * @throws UnexpectedResponseException
      * @throws GuzzleException
+     * @throws UnexpectedResponseException
      */
-    public function fetch()
+    public function fetch(?DateTime $modifiedSince)
     {
-        $apps = [];
-        foreach ($this->getEssence() as $rawApp) {
-            $app = new GetAppListResultApp;
-            $app->name = $rawApp['name'];
-            $app->appid = $rawApp['appid'];
+        $request = [
+            'include_games' => 1,
+            'max_results' => 50000,
+        ];
 
-            $apps[] = $app;
+        if ($modifiedSince) {
+            $request['if_modified_since'] = $modifiedSince->getTimestamp();
+        }
+
+        $apps = [];
+
+        $response = $this->getEssence($request);
+
+        if (!empty($response['apps'])) {
+            foreach ($response['apps'] as $rawApp) {
+                $app = new GetAppListResultApp;
+                $app->name = htmlspecialchars_decode($rawApp['name']);
+                $app->appid = $rawApp['appid'];
+
+                $apps[] = $app;
+            }
         }
 
         return $apps;
@@ -37,11 +53,11 @@ class GameNamesInnerProvider extends JsonResponseApiProvider
 
     protected function getUrl()
     {
-        return 'http://api.steampowered.com/ISteamApps/GetAppList/v0002/';
+        return 'https://api.steampowered.com/IStoreService/GetAppList/v1/';
     }
 
     protected function getEssenceValue($response)
     {
-        return $response['applist']['apps'];
+        return $response['response'];
     }
 }

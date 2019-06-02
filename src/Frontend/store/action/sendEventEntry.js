@@ -25,6 +25,8 @@ export default ({commit}, eventEntry) => {
             ([mutation, payload]) => commit(mutation, payload)
         );
 
+        commit('setPermissions', result.permissions);
+
         return result;
     });
 };

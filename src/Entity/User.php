@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Framework\Entity\IdentityProvider;
 use App\Framework\Security\RoleEnum;
 use App\Security\Role as SecurityRole;
 use DateTime;
@@ -18,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     uniqueConstraints={@ORM\UniqueConstraint(columns={"steam_id"})}
  * )
  */
-class User implements SteamUserInterface, UserInterface
+class User implements SteamUserInterface, UserInterface, IdentityProvider
 {
     /**
      * @ORM\Id

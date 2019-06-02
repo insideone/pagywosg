@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Framework\Entity\CommonEntityTrait;
+use App\Framework\Entity\IdentityProvider;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="events")
  * @ORM\HasLifecycleCallbacks
  */
-class Event
+class Event implements IdentityProvider
 {
     use CommonEntityTrait;
 

@@ -7,8 +7,8 @@ use App\Enum\ErrorType;
 use App\Framework\Exceptions\JsonSchemaValidationException;
 use App\Framework\Exceptions\NotImplementedException;
 use App\Framework\Exceptions\ReferenceLoadException;
-use App\Security\PermissionsCollection;
 use App\Security\Role;
+use App\Service\PermissionTeller;
 use App\Service\ReferenceLoader;
 use App\Validation\ErrorFormatter;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -39,11 +39,11 @@ class BaseController extends AbstractController
     /** @var ReferenceLoader */
     protected $referenceLoader;
 
-    /** @var PermissionsCollection */
-    protected $setPermissionsCollection;
-
     /** @var ErrorFormatter */
     protected $validationErrorFormatter;
+
+    /** @var PermissionTeller */
+    protected $permissionTeller;
 
     public function setSchemaLoader(File $schemaLoader)
     {
@@ -75,10 +75,9 @@ class BaseController extends AbstractController
         return $this;
     }
 
-    public function setPermissionsCollection(PermissionsCollection $permissionsCollection)
+    public function setPermissionTeller(PermissionTeller $permissionTeller)
     {
-        $this->setPermissionsCollection = $permissionsCollection;
-        return $this;
+        $this->permissionTeller = $permissionTeller;
     }
 
     /**
@@ -222,7 +221,7 @@ class BaseController extends AbstractController
         );
     }
 
-    protected function forbiddenResponse($reason = 'of the reason')
+    protected function forbiddenResponse($reason)
     {
         return $this->errorsResponse([[
             'type' => ErrorType::FORBIDDEN,
@@ -230,8 +229,9 @@ class BaseController extends AbstractController
         ]], [], Response::HTTP_FORBIDDEN);
     }
 
-    protected function notFoundResponse($name = 'Object')
+    protected function notFoundResponse($name)
     {
+        $name = lcfirst($name);
         return $this->errorsResponse([[
             'type' => ErrorType::NOT_FOUND,
             'message' => "Requested {$name} is not found"
@@ -267,46 +267,6 @@ class BaseController extends AbstractController
 
     protected function isGranted($operation, $subject = null, $checkSubOperations = true): bool
     {
-        $operator = $this->getUser();
-
-        // admin's bypass
-        if ($operator && $operator->isAdmin()) {
-            return true;
-        }
-
-        if ($checkSubOperations) {
-            $permissionHolder = $this->setPermissionsCollection->findFor($subject);
-            if ($permissionHolder) {
-                $allOperations = $permissionHolder::getOperations();
-                if (in_array($operation, $allOperations) && preg_match('~^(.+)_(own|hosted|any)$~', $operation, $m)) {
-                    [, $basicOperation, $type] = $m;
-                    $operationsToCheck = [];
-
-                    switch ($type) {
-                        /** @noinspection PhpMissingBreakStatementInspection */
-                        case 'own':
-                            $operationsToCheck["{$basicOperation}_own"] = !is_object($subject) || $permissionHolder::getOwner($subject) === $operator;
-                        /** @noinspection PhpMissingBreakStatementInspection */
-                        case 'hosted':
-                            $operationsToCheck["{$basicOperation}_hosted"] = !is_object($subject) || $permissionHolder::getHost($subject) === $operator;
-                        case 'any':
-                            $operationsToCheck["{$basicOperation}_any"] = true;
-                    }
-
-                    foreach (array_keys(array_filter($operationsToCheck)) as $operationToCheck) {
-                        if ($this->isGranted($operationToCheck, $subject, false)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            }
-        }
-
-        // It's much more comfortable to check `$subject`s as objects, but fxp_security bundle wait from us object with
-        // filled id property. In other case it fall down. So new objects aren't accessible
-        $subject = is_object($subject) ? get_class($subject) : $subject;
-
-        return parent::isGranted("perm_{$operation}", $subject);
+        return $this->permissionTeller->isGranted($operation, $subject, $checkSubOperations);
     }
 }

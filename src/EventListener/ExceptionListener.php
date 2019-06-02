@@ -35,7 +35,7 @@ class ExceptionListener
                     'line' => $exception->getLine(),
                     'trace' => $exception->getTrace(),
                 ] : [
-                    'message' => 'Something went wrong',
+                    'message' => $exception->getMessage(),
                 ])
             ],
         ];

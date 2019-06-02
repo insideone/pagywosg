@@ -32,6 +32,7 @@ class GameController extends BaseController
             ->from(Game::class, 'game')
             ->select('game')
             ->where('game.name like :query')
+            ->andWhere('game.standalone = true')
             ->setMaxResults(10)
             ->setParameters([
                 'query' => "%{$query}%",

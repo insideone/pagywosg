@@ -76,7 +76,7 @@ class EventController extends BaseController
         $events = array_values($events);
 
         if ($singleEvent && !$events) {
-            return $this->notFoundResponse('Event');
+            return $this->notFoundResponse('event');
         }
 
         $permissionsToCheck = [
@@ -192,7 +192,7 @@ class EventController extends BaseController
         }
 
         if (!$this->isGranted($attribute, $event)) {
-            return $this->forbiddenResponse();
+            return $this->forbiddenResponse("{$attribute} isn't granted");
         }
 
         if ($event->getStartedAt() > $event->getEndedAt()) {
@@ -265,7 +265,7 @@ class EventController extends BaseController
     public function delete(Event $event = null)
     {
         if ($event === null) {
-            return $this->notFoundResponse();
+            return $this->notFoundResponse('event');
         }
 
         if (!$this->isGranted(EventPermission::DELETE_OWN, $event)) {

@@ -99,7 +99,7 @@ class UserController extends BaseController
     public function addUserRole(User $user, Role $role)
     {
         if (!$this->isGranted(UserPermission::UPDATE_ANY, $user)) {
-            return $this->forbiddenResponse();
+            return $this->forbiddenResponse(UserPermission::UPDATE_ANY." isn't granted");
         }
 
         $user->addRole($role->getName());
@@ -121,7 +121,7 @@ class UserController extends BaseController
     public function deleteUserRole(User $user, Role $role)
     {
         if (!$this->isGranted(UserPermission::UPDATE_ANY, $user)) {
-            return $this->forbiddenResponse();
+            return $this->forbiddenResponse(UserPermission::UPDATE_ANY." isn't granted");
         }
 
         $user->removeRole($role->getName());

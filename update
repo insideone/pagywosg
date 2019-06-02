@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -e
+
+header() {
+    echo "==========================="
+    echo "$@"
+    echo "==========================="
+}
+
+header "Pulling changes"
+git pull --ff-only origin $(git rev-parse --abbrev-ref HEAD)
+
+header "Re-building docker"
+docker-compose build
+
+header "Restarting"
+docker-compose restart
+
+header "Updating backend"
+docker-compose exec backend composer up

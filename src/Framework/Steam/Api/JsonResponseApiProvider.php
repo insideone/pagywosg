@@ -80,7 +80,7 @@ abstract class JsonResponseApiProvider
         $essence = @$this->getEssenceValue($response);
         if (!isset($essence)) {
             throw new UnexpectedResponseException(
-                "Unexpected response while fetching {$this->lastUrl}.".
+                "Unexpected response while fetching {$this->lastUrl}.\n".
                 'First 100 symbols of response: '.substr($this->rawResponse, 0, 100)
             );
         }

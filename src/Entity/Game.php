@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Framework\Entity\IdentityProvider;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     @ORM\UniqueConstraint(columns={"id"})
  * })
  */
-class Game
+class Game implements IdentityProvider
 {
     /**
      * @ORM\Id
@@ -34,6 +35,12 @@ class Game
      * @Groups({"export"})
      */
     private $achievementsCnt;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $standalone;
 
     /**
      * @return mixed
@@ -86,6 +93,24 @@ class Game
     public function setAchievementsCnt(?int $achievementsCnt): Game
     {
         $this->achievementsCnt = $achievementsCnt;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStandalone(): bool
+    {
+        return $this->standalone;
+    }
+
+    /**
+     * @param bool $standalone
+     * @return Game
+     */
+    public function setStandalone(bool $standalone): Game
+    {
+        $this->standalone = $standalone;
         return $this;
     }
 }

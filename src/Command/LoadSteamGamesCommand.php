@@ -6,10 +6,14 @@ use App\Api\Steam\GameNamesInnerProvider;
 use App\Api\Steam\Schema\GetAppListResultApp;
 use App\Entity\Change;
 use App\Entity\Game;
+use App\Entity\Timestamp;
+use App\Enum\TimestampEnum;
 use App\Framework\Command\BaseCommand;
 use App\Framework\Exceptions\UnexpectedResponseException;
+use App\Repository\TimestampRepository;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadSteamGamesCommand extends BaseCommand
@@ -18,37 +22,56 @@ class LoadSteamGamesCommand extends BaseCommand
 
     /** @var GameNamesInnerProvider */
     protected $gameNamesProvider;
-    
-    public function __construct(GameNamesInnerProvider $gameNamesProvider)
+
+    /** @var TimestampRepository */
+    protected $timestampRepo;
+
+    public function __construct(GameNamesInnerProvider $gameNamesProvider, TimestampRepository $timestampRepo)
     {
         parent::__construct();
-        
+
         $this->gameNamesProvider = $gameNamesProvider;
+        $this->timestampRepo = $timestampRepo;
     }
 
     protected function configure()
     {
         $this->setName('steam:games:load')
-            ->setDescription('Loads steam games list and saves it in database');
+            ->setDescription('Loads steam games list and saves it in database')
+            ->getDefinition()
+            ->addOptions([
+                new InputOption('all', 'a', InputOption::VALUE_OPTIONAL, 'Fetch all games or just recently updated', false),
+                new InputOption('appid', 'app', InputOption::VALUE_OPTIONAL, 'Fetch data for specific appod', false)
+            ])
+        ;
     }
 
     protected function proceed(InputInterface $input, OutputInterface $output)
     {
+        $allMode = $input->getOption('all');
+
+        $appId = $input->getOption('appid');
+        if ($appId) {
+            $allMode = true;
+        }
+
+        $lastUpdate = $this->timestampRepo->getLastGameListUpdate();
+
         $this->ss->note('Trying to fetch games from Steam API');
 
         try {
-            $apps = $this->gameNamesProvider->fetch();
+            $apps = $this->gameNamesProvider->fetch(($allMode || !$lastUpdate) ? null : $lastUpdate->getTime());
+
+            if ($appId) {
+                $apps = array_filter($apps, function ($app) use($appId) {
+                    return $app->appid == $appId;
+                });
+            }
 
             $counters = [
                 'created' => 0,
                 'updated' => 0,
             ];
-
-            // all games ends with 0, but sometimes DLCs too
-            #$apps = array_filter($apps, function ($app) {
-            #    /** @var GetAppListResultApp $app */
-            #    return ($app->appid % 10) === 0;
-            #});
 
             $actualIds = array_map(
                 function ($app) {
@@ -80,6 +103,7 @@ class LoadSteamGamesCommand extends BaseCommand
                     $game = (new Game)
                         ->setId($newId)
                         ->setName($apps[$newId]->name)
+                        ->setStandalone(true)
                     ;
 
                     $this->changelog->add((new Change)->setObject($game, $newId)->set('name', null, $game->getName()));
@@ -107,8 +131,12 @@ class LoadSteamGamesCommand extends BaseCommand
 
                 $repo = $this->em->getRepository(Game::class);
                 foreach ($updateIds as $gameId) {
+                    /** @var Game $updatedGame */
                     $updatedGame = $repo->find($gameId);
                     $newGame = $apps[$gameId];
+
+                    $updateNeeded = false;
+
                     if ($updatedGame->getName() !== $newGame->name) {
                         $this->ss->note("Found a different game name for {$gameId}: {$updatedGame->getName()} -> {$newGame->name}");
 
@@ -119,7 +147,15 @@ class LoadSteamGamesCommand extends BaseCommand
                         );
 
                         $updatedGame->setName($newGame->name);
+                        $updateNeeded = true;
+                    }
 
+                    if (!$lastUpdate || $appId || $allMode) {
+                        $updatedGame->setStandalone(true);
+                        $updateNeeded = true;
+                    }
+
+                    if ($updateNeeded) {
                         $counters['updated']++;
                         if (($counters['updated'] % self::BATCH_SIZE) === 0) {
                             $this->ss->note('Flushing batch');
@@ -127,16 +163,24 @@ class LoadSteamGamesCommand extends BaseCommand
                             $this->em->clear();
                         }
                     }
-                    $this->em->detach($updatedGame);
+
                     $this->ss->progressAdvance();
                 }
                 $this->ss->progressFinish();
             }
 
-            if (array_sum($counters)) {
-                $this->ss->note('Flushing rests');
-                $this->em->flush();
+            if ($lastUpdate) {
+                $lastUpdate->setToNow();
+            } else {
+                $lastUpdate = new Timestamp(TimestampEnum::LAST_GAME_LIST_UPDATE);
+            }
 
+            $this->em->merge($lastUpdate);
+
+            $this->ss->note('Flushing rests');
+            $this->em->flush();
+
+            if (array_sum($counters)) {
                 foreach ($counters as $counter => $value) {
                     $this->ss->note("{$value} {$counter}");
                 }

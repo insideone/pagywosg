@@ -6,12 +6,20 @@ class ClassShortNameProvider
 {
     protected $names;
 
-    public function __invoke($name)
+    public function get($class)
     {
-        if (isset($this->names[$name])) {
-            return $this->names[$name];
+        if (!$class) {
+            return null;
         }
 
-        return ($this->names[$name] = substr(strrchr($name, '\\'), 1));
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
+
+        if (isset($this->names[$class])) {
+            return $this->names[$class];
+        }
+
+        return ($this->names[$class] = substr(strrchr($class, '\\'), 1));
     }
 }

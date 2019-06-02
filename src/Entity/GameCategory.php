@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Framework\Entity\IdentityProvider;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -11,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *    @ORM\UniqueConstraint(columns={"name"})
  * })
  */
-class GameCategory
+class GameCategory implements IdentityProvider
 {
     /**
      * @ORM\Id

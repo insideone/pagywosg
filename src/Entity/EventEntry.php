@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\DBAL\Types\PlayStatusType;
+use App\Framework\Entity\IdentityProvider;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class EventEntry
+class EventEntry implements IdentityProvider
 {
     /**
      * @ORM\Id

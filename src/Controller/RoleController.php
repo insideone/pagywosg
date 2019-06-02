@@ -18,7 +18,7 @@ class RoleController extends BaseController
     public function getList()
     {
         if (!$this->isGranted(RolePermission::READ_ANY)) {
-            return $this->forbiddenResponse();
+            return $this->forbiddenResponse(RolePermission::READ_ANY." isn't granted");
         }
         return $this->response(['roles' => $this->em->getRepository(Role::class)->findBy([], ['id' => Criteria::ASC])]);
     }

@@ -26,7 +26,7 @@ class EventEntryController extends BaseController
     protected function processEventEntry(string $attribute, Event $event, EventEntry $eventEntry = null)
     {
         if ($event === null) {
-            return $this->notFoundResponse('Event');
+            return $this->notFoundResponse('event');
         }
 
         if ($eventEntry && !$eventEntry->getPlayer()->getId()) {
@@ -53,7 +53,7 @@ class EventEntryController extends BaseController
         $eventEntry->setEvent($event);
 
         if (!$this->isGranted($attribute, $eventEntry)) {
-            return $this->forbiddenResponse();
+            return $this->forbiddenResponse("{$attribute} isn't granted");
         }
 
         try {
@@ -64,8 +64,15 @@ class EventEntryController extends BaseController
             return $this->errorResponse("It seems like you've already created such entry");
         }
 
+        $permissions = $this->permissionTeller->isGrantedMultiple([
+            'update_own' => 'update',
+            'delete_own' => 'delete',
+            'update_verification_hosted' => 'update_verification',
+        ], $eventEntry);
+
         return $this->response([
             'entry' => $eventEntry,
+            'permissions' => $permissions,
         ]);
     }
 
@@ -77,7 +84,7 @@ class EventEntryController extends BaseController
     public function create(Event $event = null)
     {
         if ($event === null) {
-            return $this->notFoundResponse('Event');
+            return $this->notFoundResponse('event');
         }
 
         return $this->processEventEntry(EventPermission::CREATE_OWN, $event);
@@ -92,7 +99,7 @@ class EventEntryController extends BaseController
     public function update(Event $event = null, EventEntry $eventEntry = null)
     {
         if ($eventEntry === null) {
-            return $this->notFoundResponse('Event entry');
+            return $this->notFoundResponse('event entry');
         }
 
         return $this->processEventEntry(EventPermission::UPDATE_OWN, $event, $eventEntry);
@@ -114,8 +121,8 @@ class EventEntryController extends BaseController
             return $this->notFoundResponse('event entry');
         }
 
-        if (!$this->isGranted(EventEntryPermission::DELETE_ANY, $eventEntry)) {
-            return $this->forbiddenResponse();
+        if (!$this->isGranted(EventEntryPermission::DELETE_OWN, $eventEntry)) {
+            return $this->forbiddenResponse(EventEntryPermission::DELETE_OWN."isn't granted");
         }
 
         $this->removeEntity($eventEntry);
