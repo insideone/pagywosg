@@ -62,7 +62,7 @@
                 </tr>
                 <tr>
                     <td class="leaderboard__td leaderboard__total-num">Total:</td>
-                    <td class="leaderboard__td leaderboard__total">{{leaderboard.length}} users</td>
+                    <td class="leaderboard__td leaderboard__total">{{leaderboard.length}} people</td>
                     <td class="leaderboard__td leaderboard__total">{{totalStats.achievements}}</td>
                     <td class="leaderboard__td leaderboard__total">{{totalStats.hours}}</td>
                     <td class="leaderboard__td leaderboard__total">{{totalStats.beaten}}</td>
@@ -103,7 +103,7 @@
         computed: {
             ...mapGetters({
                 leaderboard: 'getLeaderboard',
-                showTemplate: 'isReadingAnyUserAllowed' //TODO: change permission to sth more appropriate
+                showTemplate: 'isReadingAnyUserAllowed'
             }),
 
             eventId: function () {
@@ -141,10 +141,10 @@
                 this.leaderboard.forEach((lbEntry) => {
                     let userName = this.users[lbEntry.player].profileName;
 
-                    mdTemplate += `${userName} | ${lbEntry.achievements} | ${lbEntry.hours} | ${lbEntry.beaten}\n`;
+                    mdTemplate += `${userName} | ${+lbEntry.achievements} | ${+lbEntry.hours} | ${+lbEntry.beaten}\n`;
                 });
 
-                mdTemplate += `**Total** | **${this.totalStats.achievements}** | **${this.totalStats.hours}** | **${this.totalStats.beaten}**\n`;
+                mdTemplate += `**Total** | **${+this.totalStats.achievements}** | **${+this.totalStats.hours}** | **${+this.totalStats.beaten}**\n`;
 
                 return mdTemplate;
             }

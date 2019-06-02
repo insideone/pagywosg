@@ -63,7 +63,7 @@
                             <a
                                 :href="player.profileUrl+'stats/'+game.id+'/achievements/'"
                                 target="_blank"
-                            >{{eventEntry.achievementsCnt}}/{{game.achievementsCnt}}</a>
+                            >{{+eventEntry.achievementsCnt}}/{{+game.achievementsCnt}}</a>
                         </div>
 
                         <div class="utable__play-stat" title="Playtime">
