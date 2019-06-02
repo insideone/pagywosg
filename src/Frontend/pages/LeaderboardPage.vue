@@ -131,6 +131,10 @@
                     total.beaten += item.beaten;
                 });
 
+                total.achievements = total.achievements.toFixed(0);
+                total.hours = total.hours.toFixed(1);
+                total.beaten = total.beaten.toFixed(0);
+
                 return total;
             },
 
