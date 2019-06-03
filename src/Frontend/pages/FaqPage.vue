@@ -25,7 +25,7 @@
             </div>
             <div class="faq__answer">
                 <i class="far fa-lightbulb faq__icon faq__icon--answer"></i>
-                <div v-html="faqItem.answer"></div>
+                <div v-html="faqItem.answer" @click="changeHash"></div>
             </div>
         </div>
 
