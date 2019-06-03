@@ -20,6 +20,10 @@
                         :to="{name: 'users'}"
                         class="nav__link"
                     >Users</router-link>
+                    <router-link
+                        :to="{name: 'faq'}"
+                        class="nav__link"
+                    >FAQ</router-link>
                 </nav>
                 <steam-login-block class="nav__login-block" />
             </div>

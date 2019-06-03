@@ -10,6 +10,7 @@ import EventPage from './pages/EventPage.vue';
 import LeaderboardPage from './pages/LeaderboardPage.vue';
 import UsersPage from './pages/UsersPage.vue';
 import HelpFormattingPage from './pages/HelpFormatting.vue';
+import FaqPage from './pages/FaqPage';
 
 
 const appRouter = new Router({
@@ -62,6 +63,12 @@ const appRouter = new Router({
             path: '/help/formatting',
             component: HelpFormattingPage,
             meta: {title: 'Help: How to Format Texts'}
+        },
+        {
+            name: 'faq',
+            path: '/help/faq',
+            component: FaqPage,
+            meta: {title: 'Help: Frequently Asked Questions'}
         }
     ],
     scrollBehavior: function(to, from, savedPosition){
