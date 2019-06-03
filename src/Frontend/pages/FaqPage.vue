@@ -40,17 +40,80 @@
                 currentHash: location.hash,
                 faq: [
                     {
-                        id: 'website_info',
-                        question: 'We got a website where you can submit the games you are going to play now?',
+                        id: 'participate',
+                        question: 'How do I participate?',
                         answer:
-                            `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
+                            `Click on the "Sign in through Steam" button on the top right of the page.<br>
+                            <img src="/img/steam_login.png" alt="Steam login"><br>
+                            Once you have successfully logged-in click on the event button top left and then once again click on the event that is currently going on. Example:<br>
+                            <img src="/img/event.png" alt="Event selection" height=100px><br>
+                            Then click on the "Add new game button at either the top or bottom of the game submissions."<br>
+                            <img src="/img/add_game.png" alt="adding game"><br>
+                            Fill in the required data and submit it.<br>
+                            <img src="/img/adding_game.png" alt="Adding a game" height=150px><br>
+                            If you already have some playtime/achievements in the game or your messed up your submission click the edit button on the top right of your game submission, fill in the missing data and submit the game again.<br>
+                            <img src="/img/edit_game.png" alt="Editing a game" height=150px><br>
+                            `,
+                    },
+                    {
+                        id: 'updating_playtime',
+                        question: 'Do I need to manually update my playtime stats?',
+                        answer:
+                            `Nope, it is all done automatically :) All you need to do is set the status of the game to "Completed" or "Beaten" once you actually complete/beat the game.`,
+                    },
+                    {
+                        id: 'playtime_not_updating',
+                        question: 'But it has been over 24 hours and my stats haven\'t been updated!',
+                        answer:
+                            `Contact MouseWithBeer, you can see how <a href="http://play-a-game.localhost/help/faq#no_answer">here</a>.`,
+                    },
+                    {
+                        id: 'rewards',
+                        question: 'I have completed a game, where can I see my rewards?!?!',
+                        answer:
+                            `The rewards will appear once I check and approve the playtime to make sure the game was actually played. It normally shouldn't take more than 24 hours. Once I approve it you will be able to see the giveaway links one the event page under the description and above the game submissions where it says "Congrats on beating one (or more) of your SG wins! Rewards will be available shortly!" on the image below:<br>
+                            <img src="/img/reward.png" alt="location of the reward" height=300px><br>`,
+                    },
+                    {
+                        id: 'without_login',
+                        question: 'What can I do if I want to participate but I don\'t want to login in the website?',
+                        answer: `
+                                Leave a comment in the SteamGifts event thread for the right month saying which games you will be playing and that you don't want to login into the site. I will add the games to the site myself.
+                            `
                     },
                     {
                         id: 'all_wins_beaten',
-                        question: 'Have already completed all your wins?',
+                        question: 'Have already completed all your qualifying wins?',
                         answer: `
-                            <div>You can place HTML in answers</div>
-                            <a href="https://steamgifts.com" target="_blank">and it will even work</a>
+                                Feel free to participate with any other games that fit the theme from your Steam library.
+                            `
+                    },
+                    {
+                        id: 'bug_suggestion',
+                        question: 'I think I found a bug/I have a suggestion for the website! What should I do?',
+                        answer: `
+                                You can either open a new issue on <a href="https://github.com/insideone/pagywosg/issues" target="_blank">Github</a> or report them directly to me on Steam/SteamGifts.
+                            `
+                    },
+                    {
+                        id: 'why',
+                        question: 'Why do you need a website for this event?',
+                        answer: `
+                                Because it used to take Mouse 2-6 hours every week to go through every submission and she got tried of it.
+                            `
+                    },
+                    {
+                        id: 'steam_group',
+                        question: 'Can I join the Steam group?',
+                        answer: `
+                                Unless I explicitly tell you to request to join: no. The Steam group is reserved for people who have already successfully participated in the event at least once in the last 6 months. If you have done that and you were not told to join the group leave a comment about it in the current event thread on Steamgifts and I will take a look.
+                            `
+                    },
+                    {
+                        id: 'no_answer',
+                        question: 'None of these answers are the answer to my question. What should I do?',
+                        answer: `
+                                You can either comment with your question in the ongoing event thread on SteamGifts or you can try to contact <a href="https://steamcommunity.com/id/MouseWithBeer" target="_blank">MouseWithBeer</a> directly on Steam (please leave a comment in the comment section when adding as friend)
                             `
                     },
                 ],
@@ -106,6 +169,10 @@
         &__answer{
             border-left: 4px solid @color-blue;
             background-color: fade(@color-blue, 10%);
+
+            & img{
+                margin: 5px 0;
+            }
         }
 
         &__icon{
