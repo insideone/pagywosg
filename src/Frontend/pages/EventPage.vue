@@ -177,7 +177,57 @@
                             />
                         </div>
                     </div>
+                </div>
+                <div
+                    v-if="eventEditAllowed"
+                    class="utable__hrow"
+                >
+                    <div class="utable__hcell utable__hcell--verify">
+                        <span class="utable__show-label">Game Status:</span>
 
+                        <a
+                            :class="getClassesForVerifiedOption('gameVerified', null)"
+                            @click="changeGameVerifiedFilter(null)"
+                        >
+                            <i class="icon-fa icon-fa--inline fas fa-stream"></i>All
+                        </a>
+                        <a
+                            :class="getClassesForVerifiedOption('gameVerified', 1)"
+                            @click="changeGameVerifiedFilter(1)"
+                        >
+                            <i class="icon-fa icon-fa--inline fas fa-gamepad"></i>Verified
+                        </a>
+                        <a
+                            :class="getClassesForVerifiedOption('gameVerified', 0)"
+                            @click="changeGameVerifiedFilter(0)"
+                        >
+                            <i class="icon-fa icon-fa--inline fas fa-question"></i>Unverified
+                        </a>
+
+                    </div>
+                    <div class="utable__hcell utable__hcell--verify">
+                        <span class="utable__show-label">Played Status:</span>
+
+                        <a
+                            :class="getClassesForVerifiedOption('playStatusVerified', null)"
+                            @click="changePlayStatusVerifiedFilter(null)"
+                        >
+                            <i class="icon-fa icon-fa--inline fas fa-stream"></i>All
+                        </a>
+                        <a
+                            :class="getClassesForVerifiedOption('playStatusVerified', 1)"
+                            @click="changePlayStatusVerifiedFilter(1)"
+                        >
+                            <i class="icon-fa icon-fa--inline fas fa-clipboard-check"></i>Verified
+                        </a>
+                        <a
+                            :class="getClassesForVerifiedOption('playStatusVerified', 0)"
+                            @click="changePlayStatusVerifiedFilter(0)"
+                        >
+                            <i class="icon-fa icon-fa--inline far fa-clipboard"></i>Unverified
+                        </a>
+
+                    </div>
                 </div>
 
                 <utable-row
@@ -248,7 +298,9 @@
                     player: '',
                     game: '',
                     category: '',
-                    playStatus: ''
+                    playStatus: '',
+                    gameVerified: null,
+                    playStatusVerified: null
                 }
             };
         },
@@ -329,7 +381,19 @@
                         }
                     }
 
-                    return true;
+                    let resultVerified = true;
+                    let resultPlayStatusVerified = true;
+
+                    if (this.filter.gameVerified !== null) {
+                        resultVerified = entry.verified === (this.filter.gameVerified === 1);
+                    }
+
+                    if (this.filter.playStatusVerified !== null) {
+                        resultPlayStatusVerified = entry.playStatusVerified === (this.filter.playStatusVerified === 1);
+                    }
+
+                    return (resultVerified && resultPlayStatusVerified);
+
                 });
             },
 
@@ -434,6 +498,23 @@
 
             hideNewRow() {
                 this.isNewRowShown = false;
+            },
+
+            changeGameVerifiedFilter(value) {
+                this.filter.gameVerified = value;
+            },
+
+            changePlayStatusVerifiedFilter(value) {
+                this.filter.playStatusVerified = value;
+            },
+
+            getClassesForVerifiedOption(type, value) {
+                let classes = ['utable__show-option'];
+
+                if (this.filter[type] === value)
+                    classes.push('utable__show-option--selected');
+
+                return classes;
             }
         }
     }
