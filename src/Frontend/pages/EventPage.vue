@@ -58,7 +58,6 @@
                         class="event-detail__host-img"
                     />
                     <span class="event-detail__host-name">
-                        <i class="icon-fa icon-fa--golden fas fa-star"></i>
                         {{host.profileName}}
                     </span>
                 </a>

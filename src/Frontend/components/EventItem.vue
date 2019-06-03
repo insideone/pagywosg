@@ -133,10 +133,6 @@
             color: @color-dark-blue;
         }
 
-        &__host{
-
-        }
-
         &__descr{
             max-height: 160px;
             overflow: hidden;
@@ -144,20 +140,6 @@
             margin: 0 -16px -12px;
             padding: 0 16px 12px;
             min-height: 50px;
-
-            &:after{
-                content: '';
-                display: block;
-                position: absolute;
-                pointer-events: none;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: 60px;
-                border-radius: 0 0 4px 4px;
-                background: linear-gradient(to top, fade(@color-bg, 100%) 0%, fade(@color-bg, 80%) 50%, rgba(0, 0, 0, 0) 100%);
-                z-index: 10;
-            }
         }
     }
 

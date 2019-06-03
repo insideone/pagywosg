@@ -58,6 +58,9 @@ export default new Vuex.Store({
         getLeaderboard: state => {
             let leaderboard = state.leaderboard;
 
+            if (Object.keys(leaderboard).length === 0)
+                return leaderboard;
+
             leaderboard.sort((a, b) => {
                 if (a.hours === b.hours)
                     return 0;

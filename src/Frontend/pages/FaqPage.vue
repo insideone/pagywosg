@@ -114,6 +114,8 @@
             transform: translateY(-50%);
             font-size: 20px;
             top: 50%;
+            width: 25px;
+            text-align: center;
 
             &--answer{
                 top: 24px;
