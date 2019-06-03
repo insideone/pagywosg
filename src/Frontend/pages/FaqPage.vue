@@ -65,7 +65,7 @@
                         id: 'playtime_not_updating',
                         question: 'But it has been over 24 hours and my stats haven\'t been updated!',
                         answer:
-                            `Contact MouseWithBeer, you can see how <a href="http://play-a-game.localhost/help/faq#no_answer">here</a>.`,
+                            `Contact MouseWithBeer, you can see how <a href="#no_answer">here</a>.`,
                     },
                     {
                         id: 'rewards',
