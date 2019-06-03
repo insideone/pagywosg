@@ -7,7 +7,7 @@ use App\Framework\Exceptions\UnexpectedResponseException;
 use App\Framework\Steam\Api\JsonResponseApiProvider;
 use GuzzleHttp\Exception\GuzzleException;
 
-class PlayerAchievementsInnerProvider extends JsonResponseApiProvider
+class PlayerAchievementsApiProvider extends JsonResponseApiProvider
 {
     protected function getUrl()
     {

@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Api\Steam\GameNamesInnerProvider;
+use App\Api\Steam\GameNamesApiProvider;
 use App\Api\Steam\Schema\GetAppListResultApp;
 use App\Entity\Change;
 use App\Entity\Game;
@@ -20,13 +20,13 @@ class LoadSteamGamesCommand extends BaseCommand
 {
     const BATCH_SIZE = 10000;
 
-    /** @var GameNamesInnerProvider */
+    /** @var GameNamesApiProvider */
     protected $gameNamesProvider;
 
     /** @var TimestampRepository */
     protected $timestampRepo;
 
-    public function __construct(GameNamesInnerProvider $gameNamesProvider, TimestampRepository $timestampRepo)
+    public function __construct(GameNamesApiProvider $gameNamesProvider, TimestampRepository $timestampRepo)
     {
         parent::__construct();
 

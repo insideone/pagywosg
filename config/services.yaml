@@ -60,7 +60,7 @@ services:
             - method: setEntityManager
 
     App\Api\Steam\:
-        resource: '../src/Api/Steam/*InnerProvider.php'
+        resource: '../src/Api/Steam/*ApiProvider.php'
         calls:
             - method: setApiKey
               arguments:

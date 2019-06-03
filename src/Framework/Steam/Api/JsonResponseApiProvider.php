@@ -110,4 +110,23 @@ abstract class JsonResponseApiProvider
     {
         return true;
     }
+
+    /**
+     * @param array $data
+     * @param string $class
+     * @return object|object[]
+     */
+    protected function deserialize(array $data, string $class)
+    {
+        return $this->serializer->deserialize(
+            json_encode($data),
+            $class,
+            'json'
+        );
+    }
+
+    protected function deserializeCollection(array $data, string $class)
+    {
+        return $this->deserialize($data, "{$class}[]");
+    }
 }

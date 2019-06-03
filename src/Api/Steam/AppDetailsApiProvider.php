@@ -8,7 +8,7 @@ use App\Framework\Steam\Api\JsonResponseApiProvider;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
 
-class AppDetailsInnerProvider extends JsonResponseApiProvider
+class AppDetailsApiProvider extends JsonResponseApiProvider
 {
     protected $appId;
 

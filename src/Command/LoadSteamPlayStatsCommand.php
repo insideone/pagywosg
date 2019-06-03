@@ -2,8 +2,9 @@
 
 namespace App\Command;
 
-use App\Api\Steam\OwnedGamesInnerProvider;
-use App\Api\Steam\PlayerAchievementsInnerProvider;
+use App\Api\Steam\OwnedGamesApiProvider;
+use App\Api\Steam\PlayerAchievementsApiProvider;
+use App\Api\Steam\RecentlyPlayedApiProvider;
 use App\Api\Steam\Schema\Achievement;
 use App\Entity\Change;
 use App\Entity\EventEntry;
@@ -20,20 +21,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadSteamPlayStatsCommand extends BaseCommand
 {
-    /** @var OwnedGamesInnerProvider */
+    /** @var OwnedGamesApiProvider */
     protected $ownedGamesProvider;
 
-    /** @var PlayerAchievementsInnerProvider */
+    /** @var PlayerAchievementsApiProvider */
     protected $playerAchievementsProvider;
-    
+
+    /** @var RecentlyPlayedApiProvider */
+    protected $recentlyPlayedApiProvider;
+
     public function __construct(
-        OwnedGamesInnerProvider $ownedGamesProvider,
-        PlayerAchievementsInnerProvider $playerAchievementsProvider
+        OwnedGamesApiProvider $ownedGamesProvider,
+        PlayerAchievementsApiProvider $playerAchievementsProvider,
+        RecentlyPlayedApiProvider $recentlyPlayedApiProvider
     ) {
         parent::__construct();
-        
+
         $this->ownedGamesProvider = $ownedGamesProvider;
         $this->playerAchievementsProvider = $playerAchievementsProvider;
+        $this->recentlyPlayedApiProvider = $recentlyPlayedApiProvider;
     }
 
     protected function configure()
@@ -53,6 +59,7 @@ class LoadSteamPlayStatsCommand extends BaseCommand
             ->from(EventEntry::class, 'entry')
             ->leftJoin('entry.event', 'event')
             ->where('event.endedAt > :now')
+            //->andWhere('entry.verified = true')
             ->setParameter('now', new DateTime);
 
         if (!$input->getOption('all')) {
@@ -146,8 +153,13 @@ class LoadSteamPlayStatsCommand extends BaseCommand
                 continue;
             }
 
+            $restGames = $playerGameIds;
+
             foreach ($ownedGames as $ownedGame) {
-                $entryKey = $this->getEntryKey($playerSteamId, $ownedGame->getAppId());
+                $gameId = $ownedGame->getAppId();
+                $entryKey = $this->getEntryKey($playerSteamId, $gameId);
+
+                $restGames = array_diff($restGames, [$gameId]);
 
                 if (!isset($entries[$entryKey])) {
                     continue;
@@ -159,13 +171,59 @@ class LoadSteamPlayStatsCommand extends BaseCommand
                         ->set('playTime', $entries[$entryKey]->getPlayTime(), $ownedGame->getPlaytimeForever())
                 );
 
-                $entries[$entryKey]
-                    ->setPlayTime($ownedGame->getPlaytimeForever())
-                ;
+                $entries[$entryKey]->setPlayTime($ownedGame->getPlaytimeForever());
             }
+
+            if ($restGames) {
+                $this->updateFromRecentlyPlayed($playerSteamId, $entries, $restGames);
+            }
+
+            if ($restGames) {
+                $this->updateFromProfile($playerSteamId, $entries, $restGames);
+            }
+
             $this->ss->progressAdvance();
         }
         $this->ss->progressFinish();
+    }
+
+    /**
+     * @param array $entries
+     * @param string $playerSteamId
+     * @param array $restGames
+     * @throws GuzzleException
+     * @throws UnexpectedResponseException
+     */
+    protected function updateFromRecentlyPlayed($playerSteamId, array &$entries, array &$restGames)
+    {
+        foreach ($this->recentlyPlayedApiProvider->getList($playerSteamId) as $recentlyPlayed) {
+            $gameId = $recentlyPlayed->getAppid();
+            if (!in_array($gameId, $restGames)) {
+                continue;
+            }
+
+            $restGames = array_diff($restGames, [$gameId]);
+
+            $entryKey = $this->getEntryKey($playerSteamId, $gameId);
+            if (!isset($entries[$entryKey])) {
+                continue;
+            }
+
+            $playtimeForever = $recentlyPlayed->getPlaytimeForever();
+
+            $this->changelog->add(
+                (new Change)
+                    ->setObject($entries[$entryKey])
+                    ->set('playTime', $entries[$entryKey]->getPlayTime(), $playtimeForever)
+            );
+
+            $entries[$entryKey]->setPlayTime($playtimeForever);
+        }
+    }
+
+    protected function updateFromProfile($playerSteamId, array &$entries, array &$restGames)
+    {
+        // TODO: Fallback to parsing?
     }
 
     /**
