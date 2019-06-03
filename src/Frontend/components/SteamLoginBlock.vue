@@ -12,6 +12,7 @@
                 class="steam-login-block__img"
             />
             <span class="steam-login-block__name">{{user.profileName}}</span>
+            <a :href="'/logout'" class="steam-login-block__btn-logout" title="Exit here"><i class="fas fa-sign-out-alt"></i></a>
         </a>
         <form v-else method="post" action="https://steamcommunity.com/openid/login">
             <input type="hidden" name="openid.ns" value="http://specs.openid.net/auth/2.0">
@@ -88,6 +89,10 @@
 
         &__name{
             flex-grow: 1;
+        }
+
+        &__btn-logout {
+            margin-left: 8px;
         }
     }
 
