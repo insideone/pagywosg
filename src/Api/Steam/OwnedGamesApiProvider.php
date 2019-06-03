@@ -7,7 +7,7 @@ use App\Framework\Exceptions\UnexpectedResponseException;
 use App\Framework\Steam\Api\JsonResponseApiProvider;
 use GuzzleHttp\Exception\GuzzleException;
 
-class OwnedGamesInnerProvider extends JsonResponseApiProvider
+class OwnedGamesApiProvider extends JsonResponseApiProvider
 {
     /**
      * @param $steamUserId
@@ -44,6 +44,10 @@ class OwnedGamesInnerProvider extends JsonResponseApiProvider
 
     protected function getEssenceValue($response)
     {
+        if ($response['response']['game_count'] === 0) {
+            return [];
+        }
+
         return $response['response']['games'];
     }
 }

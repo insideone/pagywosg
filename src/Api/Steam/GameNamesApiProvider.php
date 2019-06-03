@@ -8,7 +8,7 @@ use App\Framework\Steam\Api\JsonResponseApiProvider;
 use DateTime;
 use GuzzleHttp\Exception\GuzzleException;
 
-class GameNamesInnerProvider extends JsonResponseApiProvider
+class GameNamesApiProvider extends JsonResponseApiProvider
 {
     /**
      * @param DateTime $modifiedSince
