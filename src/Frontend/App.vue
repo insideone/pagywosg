@@ -45,6 +45,14 @@
                         href="https://steamcommunity.com/groups/playSGwins"
                         class="nav__link" target="_blank"
                     >Steam Group</a>
+                    <a
+                        href="https://github.com/insideone/pagywosg"
+                        class="nav__link" target="_blank"
+                    >Github</a>
+                    <a
+                        href="https://github.com/insideone/pagywosg/issues"
+                        class="nav__link" target="_blank"
+                    >Bugs &amp; Suggestions</a>
                     <router-link
                         :to="{name: 'help_formatting'}"
                         class="nav__link"
