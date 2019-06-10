@@ -40,6 +40,7 @@ services:
       - ./docker/webserver/nginx/default.conf:/etc/nginx/default.conf
     ports:
       - 80:80
+      - 443:443
     env_file:
       - .env
       - .env.local
