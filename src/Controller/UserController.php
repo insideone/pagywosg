@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Api\Steam\PlayerSummariesProvider;
-use App\Api\Steam\SteamIdInnerProvider;
+use App\Api\Steam\SteamIdApiProvider;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Framework\Controller\BaseController;
@@ -22,13 +22,13 @@ class UserController extends BaseController
      * @Route("/api/users", methods={"GET"}, name="getUsers")
      * @param Request $request
      * @param PlayerSummariesProvider $playerSummariesProvider
-     * @param SteamIdInnerProvider $idProvider
+     * @param SteamIdApiProvider $idProvider
      * @return Response
      */
     public function getList(
         Request $request,
         PlayerSummariesProvider $playerSummariesProvider,
-        SteamIdInnerProvider $idProvider
+        SteamIdApiProvider $idProvider
     ) {
         $qb = $this->em->createQueryBuilder()
             ->from(User::class, 'user')

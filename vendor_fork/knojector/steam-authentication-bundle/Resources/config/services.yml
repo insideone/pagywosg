@@ -1,0 +1,60 @@
+services:
+    _defaults:
+        autowire: false
+        autoconfigure: true
+        public: false
+
+    Knojector\SteamAuthenticationBundle\Security\Authentication\Provider\SteamProvider: '@knojector.steam_authentication.security.authentication.provider.steam_provider'
+    Knojector\SteamAuthenticationBundle\Security\Firewall\SteamListener: '@knojector.steam_authentication.security.firewall.steam_listener'
+    Knojector\SteamAuthenticationBundle\Security\User\SteamUserProvider: '@knojector.steam_authentication.security.user.steam_user_provider'
+
+    knojector.steam_authentication.factory.user_factory:
+        class: Knojector\SteamAuthenticationBundle\Factory\UserFactory
+        arguments:
+            - '%knojector.steam_authentication.user_class%'
+
+    knojector.steam_authentication.http.steam_api_client:
+        class: Knojector\SteamAuthenticationBundle\Http\SteamApiClient
+        arguments:
+            - '%knojector.steam_authentication.api_key%'
+        public: true
+
+    knojector.steam_authentication.security.authentication.provider.steam_provider:
+        class: Knojector\SteamAuthenticationBundle\Security\Authentication\Provider\SteamProvider
+        arguments:
+            - ''
+
+    knojector.steam_authentication.security.firewall.steam_listener:
+        class: Knojector\SteamAuthenticationBundle\Security\Firewall\SteamListener
+        arguments:
+            - '@security.authentication.manager'
+            - '@router'
+            - '%knojector.steam_authentication.login_redirect%'
+            - '@security.token_storage'
+            - '@knojector.steam_authentication.request_validator'
+
+    knojector.steam_authentication.security.user.steam_user_provider:
+        class: Knojector\SteamAuthenticationBundle\Security\User\SteamUserProvider
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@knojector.steam_authentication.http.steam_api_client'
+            - '%knojector.steam_authentication.user_class%'
+            - '@knojector.steam_authentication.factory.user_factory'
+
+    knojector.steam_authentication.twig.steam_extension:
+        class: Knojector\SteamAuthenticationBundle\Twig\SteamExtension
+        arguments:
+            - '@router'
+            - '%knojector.steam_authentication.login_route%'
+        tags:
+            - { name: twig.extension }
+
+    knojector.steam_authentication.openid_validator:
+        class: Knojector\SteamAuthenticationBundle\OpenId\PayloadValidator
+
+    knojector.steam_authentication.request_validator:
+        class: '%knojector.steam_authentication.request_validator_class%'
+        arguments:
+            $router: '@router'
+            $loginRoute: '%knojector.steam_authentication.login_route%'
+            $payloadValidator: '@knojector.steam_authentication.openid_validator'

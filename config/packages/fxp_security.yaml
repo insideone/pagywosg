@@ -6,11 +6,11 @@ fxp_security:
     functions:
       is_granted:      true
   annotations:
-    security: true
+    permissions: true
   role_hierarchy:
     enabled: true
   security_voter:
-    role_security_identity: true
+    role: true
   doctrine:
     orm:
       listeners:

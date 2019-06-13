@@ -6,7 +6,7 @@ use App\Framework\Exceptions\UnexpectedResponseException;
 use App\Framework\Steam\Api\JsonResponseApiProvider;
 use GuzzleHttp\Exception\GuzzleException;
 
-class SteamIdInnerProvider extends JsonResponseApiProvider
+class SteamIdApiProvider extends JsonResponseApiProvider
 {
     protected function getUrl()
     {

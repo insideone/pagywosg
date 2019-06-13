@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Api\Steam\SteamIdInnerProvider;
+use App\Api\Steam\SteamIdApiProvider;
 use App\Entity\Event;
 use App\Entity\EventEntry;
 use App\Entity\Game;
@@ -26,10 +26,10 @@ class AddLoremIpsumEvents extends BaseCommand
     /** @var SteamUserProvider */
     protected $steamUserProvider;
 
-    /** @var SteamIdInnerProvider */
+    /** @var SteamIdApiProvider */
     protected $idProvider;
 
-    public function __construct(SteamUserProvider $steamUserProvider, SteamIdInnerProvider $idProvider)
+    public function __construct(SteamUserProvider $steamUserProvider, SteamIdApiProvider $idProvider)
     {
         parent::__construct();
         $this->steamUserProvider = $steamUserProvider;

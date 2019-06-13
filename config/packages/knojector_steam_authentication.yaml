@@ -4,3 +4,4 @@ knojector_steam_authentication:
     login_route: 'login'
     login_redirect: 'index'
     user_class: App\Entity\User
+    request_validator_class: App\Security\OpenIdRequestValidator

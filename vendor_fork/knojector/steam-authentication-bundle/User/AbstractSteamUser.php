@@ -1,102 +1,76 @@
 <?php
 
-namespace App\Entity;
+namespace Knojector\SteamAuthenticationBundle\User;
 
-use App\Framework\Entity\IdentityProvider;
-use App\Framework\Security\RoleEnum;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Fxp\Component\Security\Model\UserInterface;
-use Knojector\SteamAuthenticationBundle\User\SteamUserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Role\Role;
 
 /**
- * We have to copy AbstractStemUser stuff because it conflicts with RBAC bundle
- * Also we can't use Groups annotation without copying properties
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table("users",
- *     uniqueConstraints={@ORM\UniqueConstraint(columns={"steam_id"})}
- * )
+ * @author Knojector <dev@404-labs.xyz>
  */
-class User implements SteamUserInterface, UserInterface, IdentityProvider
+abstract class AbstractSteamUser implements SteamUserInterface, UserInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @Groups({"export"})
-     */
-    private $id;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $enabled = true;
-
-    /**
      * @var string
-     * @ORM\Column(name="steam_id", type="string", length=17)
-     * @Groups({"export", "import-createEventEntry"})
+     *
+     * @ORM\Column(type="bigint")
      */
     protected $steamId;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     protected $communityVisibilityState;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     protected $profileState;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=64)
-     * @Groups({"export"})
+     * @ORM\Column(type="string")
      */
     protected $profileName;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     protected $lastLogOff;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     protected $commentPermission;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=160)
-     * @Groups({"export"})
+     * @ORM\Column(type="string")
      */
     protected $profileUrl;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=160)
-     * @Groups({"export"})
+     * @ORM\Column(type="string")
      */
     protected $avatar;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     protected $personaState;
 
@@ -108,7 +82,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     protected $primaryClanId;
 
     /**
-     * @var DateTime|null
+     * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -117,24 +91,16 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", nullable=true, length=4)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $countryCode;
 
     /**
-     * @var string[]
-     * @ORM\Column(type="json")
-     * @Groups({"export"})
+     * @var array
+     *
+     * @ORM\Column(type="json_array")
      */
-    protected $roles = [];
-
-    /**
-     * @return int
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    protected $roles;
 
     /**
      * {@inheritdoc}
@@ -147,7 +113,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * {@inheritdoc}
      */
-    public function setSteamId($steamId)
+    public function setSteamId(int $steamId)
     {
         $this->steamId = $steamId;
     }
@@ -163,7 +129,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * {@inheritdoc}
      */
-    public function setCommunityVisibilityState(?int $state)
+    public function setCommunityVisibilityState(int $state)
     {
         $this->communityVisibilityState = $state;
     }
@@ -179,7 +145,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * {@inheritdoc}
      */
-    public function setProfileState(?int $state)
+    public function setProfileState(int $state)
     {
         $this->profileState = $state;
     }
@@ -203,7 +169,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * {@inheritdoc}
      */
-    public function getLastLogOff(): DateTime
+    public function getLastLogOff(): \DateTime
     {
         return $this->lastLogOff;
     }
@@ -211,9 +177,9 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * {@inheritdoc}
      */
-    public function setLastLogOff(?int $lastLogOff)
+    public function setLastLogOff(int $lastLogOff)
     {
-        $lastLogOffDate = new DateTime();
+        $lastLogOffDate = new \DateTime();
         $lastLogOffDate->setTimestamp($lastLogOff);
         $this->lastLogOff = $lastLogOffDate;
     }
@@ -229,7 +195,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * {@inheritdoc}
      */
-    public function setCommentPermission(?int $permission)
+    public function setCommentPermission(int $permission)
     {
         $this->commentPermission = $permission;
     }
@@ -277,7 +243,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * {@inheritdoc}
      */
-    public function setPersonaState(?int $state)
+    public function setPersonaState(? int $state)
     {
         $this->personaState = $state;
     }
@@ -301,7 +267,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     /**
      * {@inheritdoc}
      */
-    public function getJoinDate(): ?DateTime
+    public function getJoinDate(): ?\DateTime
     {
         return $this->joinDate;
     }
@@ -312,7 +278,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     public function setJoinDate(?int $joinDate): void
     {
         if (null !== $joinDate) {
-            $joinDateDate = new DateTime();
+            $joinDateDate = new \DateTime();
             $joinDateDate->setTimestamp($joinDate);
             $joinDate = $joinDateDate;
         }
@@ -357,7 +323,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
      */
     public function getUsername()
     {
-        return $this->steamId;
+       return $this->steamId;
     }
 
     /**
@@ -366,6 +332,18 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     public function eraseCredentials()
     {
         return;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getRoles(): array {
+        $roles = [];
+        foreach ($this->roles as $role) {
+            $roles[] = new Role($role);
+        }
+
+        return $roles;
     }
 
     /**
@@ -387,86 +365,5 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
         $this->setCountryCode(
             isset($userData['loccountrycode']) ? $userData['loccountrycode'] : null
         );
-    }
-
-    /**
-     * Checks whether the user's account has expired.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw an AccountExpiredException and prevent login.
-     *
-     * @return bool true if the user's account is non expired, false otherwise
-     *
-     * @see AccountExpiredException
-     */
-    public function isAccountNonExpired()
-    {
-        return $this->isAccountNonLocked();
-    }
-
-    public function isAccountNonLocked()
-    {
-        return !$this->isEnabled();
-    }
-
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-
-    public function isEnabled()
-    {
-        return $this->enabled;
-    }
-
-    public function hasRole(string $role): bool
-    {
-        return in_array($role, $this->roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = [];
-
-        foreach ($roles as $role) {
-            $this->addRole($role, false);
-        }
-
-        return $this;
-    }
-
-    public function addRole(string $role, $checkExists = true): self
-    {
-        if ($this->hasRole($role)) {
-            return $this;
-        }
-
-        $this->roles[] = $role;
-        return $this;
-    }
-
-    public function removeRole(string $role): self
-    {
-        $this->roles = array_values(array_diff($this->roles, [$role]));
-
-        return $this;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
-    public function getRoleNames()
-    {
-        return $this->getRoles();
-    }
-
-    public function isAdmin()
-    {
-        return $this->hasRole(RoleEnum::ADMIN);
     }
 }

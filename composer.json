@@ -17,27 +17,27 @@
         "doctrine/doctrine-fixtures-bundle": "^3.1",
         "fabpot/goutte": "^3.2",
         "fresh/doctrine-enum-bundle": "^6.3",
-        "fxp/security-bundle": "dev-master#0cedbede12b1f0ddb3340f62293aa153f8f1758e",
-        "fxp/doctrine-extra": "dev-master#d0be35318a9f59e7281e7bd645991128fb3b732a",
-        "fxp/doctrine-extensions": "dev-master#0b2fdea9d80d162f8d2c45d48af84727b12a1715",
+        "fxp/security-bundle": "dev-master",
+        "fxp/doctrine-extra": "dev-master",
+        "fxp/doctrine-extensions": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
-        "knojector/steam-authentication-bundle": "^1.0",
+        "knojector/steam-authentication-bundle": "dev-master",
         "opis/json-schema": "^1.0",
         "sensio/framework-extra-bundle": "^5.3",
         "symfony-bundles/json-request-bundle": "^2.0",
-        "symfony/console": "4.2.*",
+        "symfony/console": "4.3.*",
         "symfony/debug-pack": "^1.0",
-        "symfony/dotenv": "4.2.*",
+        "symfony/dotenv": "4.3.*",
         "symfony/flex": "^1.1",
-        "symfony/framework-bundle": "4.2.*",
-        "symfony/lock": "4.2.*",
+        "symfony/framework-bundle": "4.3.*",
+        "symfony/lock": "4.3.*",
         "symfony/orm-pack": "^1.0",
-        "symfony/property-info": "4.2.*",
-        "symfony/security-bundle": "4.2.*",
-        "symfony/serializer": "4.2.*",
-        "symfony/templating": "4.2.*",
-        "symfony/translation": "4.2.*",
-        "symfony/yaml": "4.2.*"
+        "symfony/property-info": "4.3.*",
+        "symfony/security-bundle": "4.3.*",
+        "symfony/serializer": "4.3.*",
+        "symfony/templating": "4.3.*",
+        "symfony/translation": "4.3.*",
+        "symfony/yaml": "4.3.*"
     },
     "config": {
         "preferred-install": {
@@ -91,7 +91,16 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "4.2.*"
+            "require": "4.3.*"
+        }
+    },
+    "repositories": {
+        "knojector/steam-authentication-bundle": {
+            "type": "path",
+            "url": "./vendor_fork/knojector/steam-authentication-bundle",
+            "options": {
+                "symlink": true
+            }
         }
     }
 }

@@ -7,7 +7,6 @@ use App\Enum\ErrorType;
 use App\Framework\Exceptions\JsonSchemaValidationException;
 use App\Framework\Exceptions\NotImplementedException;
 use App\Framework\Exceptions\ReferenceLoadException;
-use App\Security\Role;
 use App\Service\PermissionTeller;
 use App\Service\ReferenceLoader;
 use App\Validation\ErrorFormatter;
@@ -198,11 +197,6 @@ class BaseController extends AbstractController
                 // making id string, cause otherwise id can be changed to a different id
                 // due to them(ids) being very big int numbers.
                 return (string)$steamId;
-            },
-            'roles' => function ($roles) {
-                return array_map(function ($role) {
-                    return $role instanceof Role ? (string)$role : $role;
-                }, $roles);
             },
         ];
 
