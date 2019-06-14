@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Api\Steam\PlayerSummariesProvider;
 use App\Api\Steam\SteamIdApiProvider;
+use App\Entity\Event;
+use App\Entity\EventEntry;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Framework\Controller\BaseController;
 use App\Security\Permission\UserPermission;
+use DateTime;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Knojector\SteamAuthenticationBundle\Exception\InvalidApiResponseException;
@@ -132,5 +135,74 @@ class UserController extends BaseController
         }
 
         return $this->response();
+    }
+
+    /**
+     * @Route("/api/users/{user}/profile", methods={"GET"}, name="getUserProfile")
+     * @param User $user
+     * @return Response
+     * @throws Exception
+     */
+    public function getUserProfile(User $user)
+    {
+        //$activeEvents = $this->em->createQueryBuilder()
+        //    ->from(Event::class, 'event')
+        //    ->select('event')
+        //    ->join('event.entries', 'entry')
+        //    ->where('entry.player = :user')
+        //    ->andWhere('event.endedAt > :now')
+        //    ->setParameters([
+        //        'user' => $user,
+        //        'now' => new DateTime,
+        //    ])
+        //    ->getQuery()->getResult();
+
+        // verified play stats
+        $totals = $this->em->createQueryBuilder()
+            ->from(EventEntry::class, 'entry')
+            ->select(
+                'identity(entry.player) as player',
+                'sum(entry.achievementsCnt - entry.achievementsCntInitial) as achievements',
+                'sum(entry.playTime - entry.playTimeInitial) as playTime',
+            )
+            ->where('entry.player = :user')
+            ->andWhere('entry.playStatusVerified = true')
+            ->groupBy('player')
+            ->setParameters([
+                'user' => $user,
+            ])
+            ->getQuery()->getScalarResult()[0];
+
+        // participated events
+        $totals['events'] = $this->em->createQueryBuilder()
+            ->from(EventEntry::class, 'entry')
+            ->select('COUNT(distinct event) as cnt')
+            ->where('entry.player = :user')
+            ->setParameters([
+                'user' => $user,
+            ])
+            ->join('entry.event', 'event')
+            ->join('entry.player', 'player')
+            ->groupBy('player')
+            ->getQuery()->getSingleScalarResult();
+
+        $totals['entries'] = $this->em->createQueryBuilder()
+            ->from(EventEntry::class, 'entry')
+            ->select('COUNT(entry) as cnt')
+            ->where('entry.player = :user')
+            ->setParameters([
+                'user' => $user,
+            ])
+            ->getQuery()->getSingleScalarResult();
+
+        $totals = array_map(function ($value) {
+            return (int)$value;
+        }, $totals);
+
+        return $this->response([
+            'totals' => $totals,
+            'user' => $user,
+            //'activeEvents' => $activeEvents,
+        ]);
     }
 }
