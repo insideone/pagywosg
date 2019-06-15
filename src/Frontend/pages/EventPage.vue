@@ -119,20 +119,28 @@
                         </div>
                     </div>
                     <div class="utable__hcell utable__col-player">
-                        <div class="utable__heading" title="Player">
+                        <div class="utable__heading">
                             <i class="icon-fa icon-fa--inline fas fa-user"></i>
                             Player
+                            <a
+                                v-if="loggedUser"
+                                @click.prevent="setFilterMineEntries"
+                                title="Show my entries only"
+                                class="utable__link-control utable__link-me"
+                            >
+                                <i class="icon-fa icon-fa--inline fas fa-arrow-alt-circle-down"></i>me
+                            </a>
                         </div>
                         <div class="utable__filter">
                             <input
                                 v-model="filter.player"
                                 class="utable__input"
-                                placeholder="Player name or steamID"
+                                placeholder="Player name or steamID..."
                             />
                         </div>
                     </div>
                     <div class="utable__hcell utable__col-game">
-                        <div class="utable__heading" title="Game">
+                        <div class="utable__heading">
                             <i class="icon-fa icon-fa--inline fab fa-steam-square"></i>
                             Game
                         </div>
@@ -140,12 +148,12 @@
                             <input
                                 v-model="filter.game"
                                 class="utable__input"
-                                placeholder="Game title or appID"
+                                placeholder="Game title or appID..."
                             />
                         </div>
                     </div>
                     <div class="utable__hcell utable__col-subcat">
-                        <div class="utable__heading" title="Subcategory">
+                        <div class="utable__heading">
                             <i class="icon-fa icon-fa--inline far fa-flag"></i>
                             Subcategory
                         </div>
@@ -153,7 +161,7 @@
                             <input
                                 v-model="filter.category"
                                 class="utable__input"
-                                placeholder="Subcategory"
+                                placeholder="Subcategory..."
                             />
                         </div>
                     </div>
@@ -164,7 +172,7 @@
                         </div>
                     </div>
                     <div class="utable__hcell utable__col-status">
-                        <div class="utable__heading" title="Status">
+                        <div class="utable__heading">
                             <i class="icon-fa icon-fa--inline fas fa-clipboard-check"></i>
                             Status
                         </div>
@@ -172,7 +180,7 @@
                             <input
                                 v-model="filter.playStatus"
                                 class="utable__input"
-                                placeholder="Status"
+                                placeholder="Status..."
                             />
                         </div>
                     </div>
@@ -305,7 +313,7 @@
         },
         computed: {
             ...mapGetters({
-                entryCreateAllowed: 'isCreatingEntryAllowed',
+                entryCreateAllowed: 'isCreatingEntryAllowed'
             }),
 
             eventEditAllowed: function () {
@@ -419,6 +427,9 @@
                 .finally(() => {
                     this.isLoading = false;
                 });
+
+            this.filter.player = this.$route.query.player;
+
         },
         methods: {
             renderMarkdown(text) {
@@ -514,6 +525,10 @@
                     classes.push('utable__show-option--selected');
 
                 return classes;
+            },
+
+            setFilterMineEntries() {
+                this.filter.player = this.loggedUser.steamId;
             }
         }
     }

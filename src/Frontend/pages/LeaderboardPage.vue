@@ -62,7 +62,16 @@
                             :title="calcPreciseTime( lbEntry.minutes )"
                         >{{+lbEntry.hours}}</span>
                     </td>
-                    <td class="leaderboard__td">{{+lbEntry.beaten}}</td>
+                    <td class="leaderboard__td">
+                        <router-link
+                            :to="{
+                                name: 'event_detail',
+                                params: {eventId: event.id},
+                                query: {player: users[lbEntry.player].steamId}
+                            }"
+                        >{{+lbEntry.beaten}}</router-link>
+
+                    </td>
                 </tr>
                 <tr>
                     <td class="leaderboard__td leaderboard__total-num">Total:</td>
