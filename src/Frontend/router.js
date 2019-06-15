@@ -3,14 +3,15 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 
-import IndexPage from './pages/Index.vue';
-import EventsPage from './pages/EventsPage.vue';
-import NewEventPage from './pages/NewEventPage.vue';
-import EventPage from './pages/EventPage.vue';
-import LeaderboardPage from './pages/LeaderboardPage.vue';
-import UsersPage from './pages/UsersPage.vue';
-import HelpFormattingPage from './pages/HelpFormatting.vue';
-import FaqPage from './pages/FaqPage';
+
+const IndexPage = () => import( /* webpackChunkName: "index_page" */ './pages/Index.vue');
+const EventsPage = () => import( /* webpackChunkName: "events_page" */ './pages/EventsPage.vue');
+const NewEventPage = () => import( /* webpackChunkName: "new_event_page" */ './pages/NewEventPage.vue');
+const EventPage = () => import( /* webpackChunkName: "event_detail" */ './pages/EventPage.vue');
+const LeaderboardPage = () => import( /* webpackChunkName: "event_leaderboards" */ './pages/LeaderboardPage.vue');
+const UsersPage = () => import( /* webpackChunkName: "users_page" */ './pages/UsersPage.vue');
+const HelpFormattingPage = () => import( /* webpackChunkName: "help_formatting" */ './pages/HelpFormatting.vue');
+const FaqPage = () => import( /* webpackChunkName: "faq_page" */ './pages/FaqPage.vue');
 
 
 const appRouter = new Router({
