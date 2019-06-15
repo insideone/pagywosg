@@ -69,6 +69,7 @@ class LeaderboardEntry
 
     /**
      * @return int
+     * @Groups({"export"})
      */
     public function getMinutes(): int
     {

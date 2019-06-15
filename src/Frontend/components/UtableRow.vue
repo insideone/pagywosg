@@ -66,7 +66,10 @@
                             >{{+eventEntry.achievementsCnt}}/{{+game.achievementsCnt}}</a>
                         </div>
 
-                        <div class="utable__play-stat" title="Playtime">
+                        <div
+                            :title="calcPreciseTime(eventEntry.playTime)"
+                            class="utable__play-stat"
+                        >
                             <i
                                 :class="[
                                 'icon-fa', 'fas', 'fa-clock',
@@ -86,7 +89,10 @@
                                 <span v-if="game.achievementsCnt === 0">&mdash;</span>
                                 <span v-else>{{+eventEntry.achievementsCntInitial}}</span>
                             </div>
-                            <div class="utable__play-stat">
+                            <div
+                                :title="calcPreciseTime(eventEntry.playTimeInitial)"
+                                class="utable__play-stat"
+                            >
                                 <i class="icon-fa fas fa-clock"></i>
                                 {{playtimeInitialFormatted}}h
                             </div>
@@ -460,6 +466,13 @@
                 let hours = parseFloat(minutes) * 60;
 
                 return parseInt(hours);
+            },
+
+            calcPreciseTime(value) {
+                let hours = parseInt(value / 60);
+                let minutes = parseInt(value % 60);
+
+                return `${hours}h ${minutes}m`;
             },
 
             submitEdits() {

@@ -57,14 +57,22 @@
                         </div>
                     </td>
                     <td class="leaderboard__td">{{+lbEntry.achievements}}</td>
-                    <td class="leaderboard__td">{{+lbEntry.hours}}</td>
+                    <td class="leaderboard__td">
+                        <span
+                            :title="calcPreciseTime( lbEntry.minutes )"
+                        >{{+lbEntry.hours}}</span>
+                    </td>
                     <td class="leaderboard__td">{{+lbEntry.beaten}}</td>
                 </tr>
                 <tr>
                     <td class="leaderboard__td leaderboard__total-num">Total:</td>
                     <td class="leaderboard__td leaderboard__total">{{leaderboard.length}} people</td>
                     <td class="leaderboard__td leaderboard__total">{{totalStats.achievements}}</td>
-                    <td class="leaderboard__td leaderboard__total">{{totalStats.hours}}</td>
+                    <td class="leaderboard__td leaderboard__total">
+                        <span
+                            :title="calcPreciseTime( totalStats.minutes )"
+                        >{{totalStats.hours}}</span>
+                    </td>
                     <td class="leaderboard__td leaderboard__total">{{totalStats.beaten}}</td>
                 </tr>
             </table>
@@ -122,17 +130,20 @@
                 let total = {
                     achievements: 0,
                     hours: 0,
+                    minutes: 0,
                     beaten: 0
                 };
 
                 this.leaderboard.forEach((item) => {
                     total.achievements += item.achievements;
                     total.hours += item.hours;
+                    total.minutes += item.minutes;
                     total.beaten += item.beaten;
                 });
 
                 total.achievements = total.achievements.toFixed(0);
                 total.hours = total.hours.toFixed(1);
+                total.minutes = total.minutes.toFixed(0);
                 total.beaten = total.beaten.toFixed(0);
 
                 return total;
@@ -158,7 +169,12 @@
                 .finally(() => this.isLoading = false)
         },
         methods: {
+            calcPreciseTime(value) {
+                let hours = parseInt(value / 60);
+                let minutes = parseInt(value % 60);
 
+                return `${hours}h ${minutes}m`;
+            }
         }
     }
 </script>
