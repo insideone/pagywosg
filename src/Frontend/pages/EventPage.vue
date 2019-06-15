@@ -490,7 +490,7 @@
                 if (scrollToNewRow)
                 {
                     setTimeout(() => {
-                        document.getElementById('event-new-row').scrollIntoView({behavior: 'smooth'});
+                        document.getElementById('event-new-row').scrollIntoView({behavior: 'auto'});
                     }, 25);
                 }
             },
