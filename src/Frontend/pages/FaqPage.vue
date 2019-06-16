@@ -46,13 +46,13 @@
                             `Click on the "Sign in through Steam" button on the top right of the page.<br>
                             <img src="/img/steam_login.png" alt="Steam login"><br>
                             Once you have successfully logged-in click on the event button top left and then once again click on the event that is currently going on. Example:<br>
-                            <img src="/img/event.png" alt="Event selection" height=100px><br>
+                            <img src="/img/event.png" alt="Event selection" width="840"><br>
                             Then click on the "Add new game button at either the top or bottom of the game submissions."<br>
                             <img src="/img/add_game.png" alt="adding game"><br>
                             Fill in the required data and submit it.<br>
-                            <img src="/img/adding_game.png" alt="Adding a game" height=150px><br>
+                            <img src="/img/adding_game.png" alt="Adding a game" width="840"><br>
                             If you already have some playtime/achievements in the game or your messed up your submission click the edit button on the top right of your game submission, fill in the missing data and submit the game again.<br>
-                            <img src="/img/edit_game.png" alt="Editing a game" height=150px><br>
+                            <img src="/img/edit_game.png" alt="Editing a game" width="840"><br>
                             `,
                     },
                     {
@@ -72,7 +72,7 @@
                         question: 'I have completed a game, where can I see my rewards?!?!',
                         answer:
                             `The rewards will appear once I check and approve the playtime to make sure the game was actually played. It normally shouldn't take more than 24 hours. Once I approve it you will be able to see the giveaway links one the event page under the description and above the game submissions where it says "Congrats on beating one (or more) of your SG wins! Rewards will be available shortly!" on the image below:<br>
-                            <img src="/img/reward.png" alt="location of the reward" height=300px><br>`,
+                            <img src="/img/reward.png" alt="location of the reward" height="300"><br>`,
                     },
                     {
                         id: 'without_login',
@@ -172,6 +172,7 @@
 
             & img{
                 margin: 5px 0;
+                max-width: 100%;
             }
         }
 

@@ -56,25 +56,6 @@
         },
         data () {
             return {
-                filters: [
-                    {
-                        name: 'All',
-                        id: 1
-                    },
-                    {
-                        name: 'Mine',
-                        id: 2
-                    },
-                    {
-                        name: 'Running',
-                        id: 3,
-                    },
-                    {
-                        name: 'Over',
-                        id: 4
-                    }
-                ],
-                currentFilter: 3,
                 isLoading: true
             };
         },
@@ -91,11 +72,7 @@
         methods: {
             ...mapActions({
                 doFetchEvents: 'fetchEvents'
-            }),
-
-            changeFilter (filterId) {
-                this.currentFilter = filterId;
-            }
+            })
         },
     }
 </script>
