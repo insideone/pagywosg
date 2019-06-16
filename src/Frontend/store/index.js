@@ -18,7 +18,9 @@ export default new Vuex.Store({
         playStatuses: {},
         roles: {},
         leaderboard: {},
-        permissions: {}
+        permissions: {},
+        userProfile: {},
+        totals: {}
     },
     getters: {
         getShowedEvents: (state) => state.showedEvents.map(eventId => state.events[eventId]),
@@ -86,7 +88,11 @@ export default new Vuex.Store({
 
         isDeletingTheEntryAllowed: state => (entryId) => state.permissions['delete:eventEntry:#'+entryId],
 
-        isUpdatingVerificationForTheEntryAllowed: state => (entryId) => state.permissions['update_verification:eventEntry:#'+entryId]
+        isUpdatingVerificationForTheEntryAllowed: state => (entryId) => state.permissions['update_verification:eventEntry:#'+entryId],
+
+        getUserProfile: state => state.userProfile,
+
+        getTotals: state => state.totals
 
     },
     actions,
@@ -146,6 +152,10 @@ export default new Vuex.Store({
 
         setLeaderboard: (state, payload) => state.leaderboard = payload,
 
-        setPermissions: (state, payload) => state.permissions = {...state.permissions, ...payload}
+        setPermissions: (state, payload) => state.permissions = {...state.permissions, ...payload},
+
+        setUserProfile: (state, userProfile) => state.userProfile = userProfile,
+
+        setTotals: (state, totals) => state.totals = totals
     }
 });

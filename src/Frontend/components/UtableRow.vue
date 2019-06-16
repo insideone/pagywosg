@@ -6,10 +6,9 @@
             <div class="utable__line">
                 <div class="utable__num utable__col-num">{{i+1}}</div>
                 <div class="utable__player utable__col-player">
-                    <a
-                        :href="player.profileUrl"
-                        target="_blank"
-                    >{{player.profileName}}</a>
+                    <router-link
+                        :to="{name: 'user_profile', params: {userId: player.id}}"
+                    >{{player.profileName}}</router-link>
                 </div>
                 <a
                     :href="'https://store.steampowered.com/app/'+game.id+'/'"

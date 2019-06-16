@@ -46,9 +46,8 @@
                     </div>
 
                 </div>
-                <a
-                    :href="host.profileUrl"
-                    target="_blank"
+                <router-link
+                    :to="{name: 'user_profile', params: {userId: host.id}}"
                     class="event-detail__host"
                     title="The creator of this event"
                 >
@@ -60,7 +59,7 @@
                     <span class="event-detail__host-name">
                         {{host.profileName}}
                     </span>
-                </a>
+                </router-link>
 
             </div>
 

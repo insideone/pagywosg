@@ -1,7 +1,7 @@
 <template>
     <div
         class="event-item"
-        @click="goToEventDetail(event.id)"
+        @click="goToEventDetail(event.id, $event)"
     >
         <div class="event-item__top-line">
             <div class="event-item__title">{{event.name}}</div>
@@ -20,10 +20,9 @@
                 </div>
                 <div class="event-item__host" title="The name of the creator of this event">
                     <i class="icon-fa icon-fa--golden fas fa-star"></i>
-                    <a
-                        :href="host.profileUrl"
-                        target="_blank"
-                    >{{host.profileName}}</a>
+                    <router-link
+                        :to="{name: 'user_profile', params: {userId: host.id}}"
+                    >{{host.profileName}}</router-link>
                 </div>
             </div>
         </div>
@@ -72,7 +71,11 @@
 
         },
         methods: {
-            goToEventDetail(eventId){
+            goToEventDetail(eventId, $event){
+
+                if ($event.target.tagName === 'A')
+                    return;
+
                 this.$router.push({name: 'event_detail', params: {eventId}});
             },
 

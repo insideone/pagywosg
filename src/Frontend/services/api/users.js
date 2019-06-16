@@ -19,4 +19,8 @@ export default new class extends BaseApi {
     removeRole(user, roleId) {
         return this.axios.delete(this.path(user.id, 'roles', roleId));
     }
+
+    read(id) {
+        return this.axios.get(this.path(id, 'profile'));
+    }
 }

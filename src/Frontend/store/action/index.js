@@ -11,6 +11,7 @@ import fetchRoles from './fetchRoles'
 import updateUserRoleState from './updateUserRoleState'
 import verifyEntry from './verifyEntry'
 import fetchLeaderboard from './fetchLeaderboard';
+import fetchUserProfile from './fetchUserProfile';
 
 export default {
     fetchEvents,
@@ -25,5 +26,6 @@ export default {
     fetchRoles,
     updateUserRoleState,
     verifyEntry,
-    fetchLeaderboard
+    fetchLeaderboard,
+    fetchUserProfile
 };

@@ -19,6 +19,7 @@ class DefaultController extends BaseController
      * @Route("/events/{eventId}/edit", name="event_edit_page")
      * @Route("/events/{eventId}/leaderboard", name="event_leaderboard_page")
      * @Route("/help/{page}", name="help_page", defaults={"page" = ""})
+     * @Route("/user/{userId}", name="user_profile_page", requirements={"userId"="\d+"})
      */
     public function __invoke()
     {

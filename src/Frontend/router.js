@@ -10,6 +10,7 @@ const NewEventPage = () => import( /* webpackChunkName: "new_event_page" */ './p
 const EventPage = () => import( /* webpackChunkName: "event_detail" */ './pages/EventPage.vue');
 const LeaderboardPage = () => import( /* webpackChunkName: "event_leaderboards" */ './pages/LeaderboardPage.vue');
 const UsersPage = () => import( /* webpackChunkName: "users_page" */ './pages/UsersPage.vue');
+const UserPage = () => import( /* webpackChunkName: "user_page" */ './pages/UserPage.vue');
 const HelpFormattingPage = () => import( /* webpackChunkName: "help_formatting" */ './pages/HelpFormatting.vue');
 const FaqPage = () => import( /* webpackChunkName: "faq_page" */ './pages/FaqPage.vue');
 
@@ -58,6 +59,12 @@ const appRouter = new Router({
             path: '/users',
             component: UsersPage,
             meta: {title: 'Users Manage'}
+        },
+        {
+            name: 'user_profile',
+            path: '/user/:userId',
+            component: UserPage,
+            meta: {title: 'User Profile'}
         },
         {
             name: 'help_formatting',

@@ -158,12 +158,13 @@ class UserController extends BaseController
         //    ->getQuery()->getResult();
 
         // verified play stats
-        $totals = $this->em->createQueryBuilder()
+        $totalsData = $this->em->createQueryBuilder()
             ->from(EventEntry::class, 'entry')
             ->select(
                 'identity(entry.player) as player',
                 'sum(entry.achievementsCnt - entry.achievementsCntInitial) as achievements',
                 'sum(entry.playTime - entry.playTimeInitial) as playTime',
+                'count(distinct entry.game) as beaten'
             )
             ->where('entry.player = :user')
             ->andWhere('entry.playStatusVerified = true')
@@ -171,7 +172,11 @@ class UserController extends BaseController
             ->setParameters([
                 'user' => $user,
             ])
-            ->getQuery()->getScalarResult()[0];
+            ->getQuery()->getScalarResult();
+
+        $totals = [];
+        if (isset($totalsData[0]))
+            $totals = $totalsData[0];
 
         // participated events
         $totals['events'] = $this->em->createQueryBuilder()

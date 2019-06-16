@@ -1,19 +1,21 @@
 <template>
     <div class="steam-login-block">
-        <a
-            v-if="userId"
-            :href="user.profileUrl"
-            class="steam-login-block__user"
-            target="_blank"
-        >
-            <img
-                :src="user.avatar"
-                :alt="user.profileName"
-                class="steam-login-block__img"
-            />
-            <span class="steam-login-block__name">{{user.profileName}}</span>
+
+        <template v-if="userId">
+            <router-link
+                :to="{name: 'user_profile', params: {userId: user.id}}"
+                class="steam-login-block__user"
+            >
+                <img
+                    :src="user.avatar"
+                    :alt="user.profileName"
+                    class="steam-login-block__img"
+                />
+                <span class="steam-login-block__name">{{user.profileName}}</span>
+            </router-link>
             <a :href="'/logout'" class="steam-login-block__btn-logout" title="Exit here"><i class="fas fa-sign-out-alt"></i></a>
-        </a>
+        </template>
+
         <form v-else method="post" action="https://steamcommunity.com/openid/login">
             <input type="hidden" name="openid.ns" value="http://specs.openid.net/auth/2.0">
             <input type="hidden" name="openid.mode" value="checkid_setup">
