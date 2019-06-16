@@ -68,10 +68,10 @@ class LeaderboardEntry
     }
 
     /**
-     * @return int
+     * @return int|null
      * @Groups({"export"})
      */
-    public function getMinutes(): int
+    public function getMinutes()
     {
         return $this->minutes;
     }

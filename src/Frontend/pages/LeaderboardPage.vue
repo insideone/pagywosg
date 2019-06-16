@@ -35,6 +35,7 @@
                 <tr
                     v-for="(lbEntry, key) in leaderboard"
                     :key="'lb_'+key"
+                    :class="{'leaderboard__tr-inactive': (lbEntry.beaten <= 0)}"
                 >
                     <td class="leaderboard__td leaderboard__num">{{key+1}}</td>
                     <td class="leaderboard__td leaderboard__user">
@@ -163,6 +164,9 @@
                     ':-: | :-: | :-: | :-:\n';
 
                 this.leaderboard.forEach((lbEntry) => {
+                    if (lbEntry.beaten <= 0)
+                        return true;
+
                     let userName = this.users[lbEntry.player].profileName;
 
                     mdTemplate += `${userName} | ${+lbEntry.achievements} | ${+lbEntry.hours} | ${+lbEntry.beaten}\n`;
@@ -191,6 +195,7 @@
 <style lang="less">
     @import "../assets/mixins";
     @import "../assets/blocks/leaderboard";
+    @import "../assets/blocks/form";
 
     .lb-page{
 

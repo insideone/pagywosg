@@ -195,7 +195,7 @@
                                     :key="'sel_play_status_'+key"
                                     :value="playStatus.id"
                                 >{{playStatus.name}}</option>
-                                <option value="b_c">Beaten & Completed</option>
+                                <option value="b_c">Beaten &amp; Completed</option>
                             </select>
                         </div>
                     </div>
