@@ -83,12 +83,11 @@
                 </div>
             </div>
 
-            <div class="event-detail__descr" v-if="eventUnlocksCompiled">
-                <div
-                    :class="['event-detail__descr-block', {'_active': true}]"
-                >
-                    <div class="event-detail__descr-content text" v-html="eventUnlocksCompiled"></div>
+            <div class="event-detail__unlocks" v-if="eventUnlocksCompiled">
+                <div class="event-detail__unlocks-icon">
+                    <i class="icon-fa icon-fa--pink fas fa-unlock-alt"></i>
                 </div>
+                <div class="text" v-html="eventUnlocksCompiled"></div>
             </div>
 
 
@@ -158,11 +157,19 @@
                             Subcategory
                         </div>
                         <div class="utable__filter">
-                            <input
+                            <select
                                 v-model="filter.category"
                                 class="utable__input"
-                                placeholder="Subcategory..."
-                            />
+                                title="Select subcategory"
+                            >
+                                <option selected value="all">All categories</option>
+                                <option
+                                    v-for="(category, key) in gameCategories"
+                                    :key="'sel_category_'+key"
+                                    :value="category.id"
+                                >{{category.name}}</option>
+
+                            </select>
                         </div>
                     </div>
                     <div class="utable__hcell utable__col-stats">
@@ -177,11 +184,19 @@
                             Status
                         </div>
                         <div class="utable__filter">
-                            <input
+                            <select
                                 v-model="filter.playStatus"
                                 class="utable__input"
-                                placeholder="Status..."
-                            />
+                                title="Select played status"
+                            >
+                                <option selected value="all">All statuses</option>
+                                <option
+                                    v-for="(playStatus, key) in playStatuses"
+                                    :key="'sel_play_status_'+key"
+                                    :value="playStatus.id"
+                                >{{playStatus.name}}</option>
+                                <option value="b_c">Beaten & Completed</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -237,15 +252,27 @@
                     </div>
                 </div>
 
-                <utable-row
-                    v-for="(eventEntry, key) in eventEntries"
-                    :key="'event_entry_'+eventEntry.id"
-                    :event-entry="eventEntry"
-                    :i="key"
-                    :isMine="loggedUser && eventEntry.player === loggedUser.id"
-                    :game-categories="gameCategories"
-                    :play-statuses="playStatuses"
-                />
+                <template
+                    v-if="shownEntriesCnt > 0"
+                >
+                    <utable-row
+                        v-for="(eventEntry, key) in eventEntries"
+                        :key="'event_entry_'+eventEntry.id"
+                        :event-entry="eventEntry"
+                        :i="key"
+                        :isMine="loggedUser && eventEntry.player === loggedUser.id"
+                        :game-categories="gameCategories"
+                        :play-statuses="playStatuses"
+                    />
+                </template>
+
+                <div
+                    v-else
+                    class="utable__not-found utable__row"
+                >
+                    <i class="icon-fa icon-fa--inline fas fa-times-circle"></i>
+                    &nbsp;No entries matching your request.
+                </div>
 
                 <utable-row-add-new
                     v-if="isNewRowShown"
@@ -304,8 +331,8 @@
                 filter: {
                     player: '',
                     game: '',
-                    category: '',
-                    playStatus: '',
+                    category: 'all',
+                    playStatus: 'all',
                     gameVerified: null,
                     playStatusVerified: null
                 }
@@ -368,24 +395,28 @@
                         }
                     }
 
-                    if (this.filter.category) {
-                        let
-                            category = this.getGameCategory(entry.category),
-                            hasFitName = category.name.toLowerCase().indexOf(this.filter.category.toLowerCase()) !== -1;
+                    if (this.filter.category && (this.filter.category !== 'all')) {
 
-                        if (!hasFitName) {
+                        if (entry.category !== this.filter.category)
                             return false;
-                        }
                     }
 
-                    if (this.filter.playStatus) {
-                        let
-                            playStatus = this.getPlayStatus(entry.playStatus),
-                            hasFitName = playStatus.name.toLowerCase().indexOf(this.filter.playStatus.toLowerCase()) !== -1;
+                    if (this.filter.playStatus && (this.filter.playStatus !== 'all')) {
 
-                        if (!hasFitName) {
-                            return false;
+                        let filterStatuses = [];
+
+                        if (this.filter.playStatus === 'b_c')
+                        {
+                            filterStatuses.push('beaten');
+                            filterStatuses.push('completed');
                         }
+                        else
+                            filterStatuses.push( this.filter.playStatus.toLowerCase());
+
+                        let playStatus = this.getPlayStatus(entry.playStatus).name.toLowerCase();
+
+                        if (filterStatuses.indexOf(playStatus) === -1)
+                            return false;
                     }
 
                     let resultVerified = true;
@@ -406,6 +437,10 @@
 
             eventEntriesCnt: function () {
                 return this.event.entries.length;
+            },
+
+            shownEntriesCnt: function () {
+                return this.eventEntries.length;
             },
 
             eventDescriptionCompiled: function () {
@@ -613,8 +648,21 @@
             }
         }
 
-        &__descr-content{
+        &__unlocks{
+            background-color: fade(@color-pink, 7%);
+            padding: 20px 10px 0;
+            margin-bottom: 20px;
+            border-top: 1px solid @color-pink;
+            border-bottom: 1px solid @color-pink;
+            display: flex;
+            align-items: center;
 
+            &-icon{
+                font-size: 28px;
+                width: 40px;
+                margin-right: 10px;
+                text-align: center;
+            }
         }
 
         &__btn-collapse{

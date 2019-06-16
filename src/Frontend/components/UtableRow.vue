@@ -73,7 +73,7 @@
                             <i
                                 :class="[
                                 'icon-fa', 'fas', 'fa-clock',
-                                (eventEntry.playtime > 0) ? 'icon-fa--golden' : 'icon-fa--gray'
+                                (eventEntry.playTime > 0) ? 'icon-fa--golden' : 'icon-fa--gray'
                             ]"
                             ></i>
                             {{playtimeFormatted}}h
