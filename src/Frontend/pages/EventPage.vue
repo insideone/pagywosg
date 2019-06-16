@@ -87,7 +87,7 @@
                 <div class="event-detail__unlocks-icon">
                     <i class="icon-fa icon-fa--pink fas fa-unlock-alt"></i>
                 </div>
-                <div class="text" v-html="eventUnlocksCompiled"></div>
+                <div class="event-detail__unlocks-text text" v-html="eventUnlocksCompiled"></div>
             </div>
 
 
@@ -465,6 +465,9 @@
 
             this.filter.player = this.$route.query.player;
 
+            if (this.$route.query.status)
+                this.filter.playStatus = this.$route.query.status;
+
         },
         methods: {
             renderMarkdown(text) {
@@ -650,7 +653,7 @@
 
         &__unlocks{
             background-color: fade(@color-pink, 7%);
-            padding: 20px 10px 0;
+            padding: 0 10px 0;
             margin-bottom: 20px;
             border-top: 1px solid @color-pink;
             border-bottom: 1px solid @color-pink;
@@ -662,6 +665,10 @@
                 width: 40px;
                 margin-right: 10px;
                 text-align: center;
+            }
+
+            &-text{
+                padding-top: 20px;
             }
         }
 

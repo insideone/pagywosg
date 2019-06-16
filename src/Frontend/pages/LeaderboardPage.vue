@@ -68,7 +68,10 @@
                             :to="{
                                 name: 'event_detail',
                                 params: {eventId: event.id},
-                                query: {player: users[lbEntry.player].steamId}
+                                query: {
+                                    player: users[lbEntry.player].steamId,
+                                    status: 'b_c'
+                                }
                             }"
                         >{{+lbEntry.beaten}}</router-link>
 
