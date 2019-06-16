@@ -13,8 +13,7 @@
         >
             <div class="faq__question">
                 <i class="fas fa-question-circle faq__icon"></i>
-                {{faqItem.question}}
-
+                <div class="faq__question-text">{{faqItem.question}}</div>
                 <a
                     :href="'#'+faqItem.id"
                     @click="changeHash"
@@ -157,13 +156,18 @@
             border-left: 4px solid @color-pink;
             background: fade(@color-light-pink, 10%);
             border-bottom: 1px solid @color-pink;
+            display: flex;
+            align-items: center;
+        }
+
+        &__question-text{
+            flex-grow: 1;
         }
         
         &__question-link{
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
+            white-space: nowrap;
+            margin-left: 10px;
+            flex-shrink: 0;
         }
 
         &__answer{
