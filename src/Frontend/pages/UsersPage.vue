@@ -31,7 +31,11 @@
                     :key="'td_user_'+userKey"
                 >
                     <td>
-                        <div class="users-page__username">{{user.profileName}}</div>
+                        <div class="users-page__username">
+                            <router-link
+                                :to="{name: 'user_profile', params: {userId: user.id}}"
+                            >{{user.profileName}}</router-link>
+                        </div>
                         <div class="users-page__userid">{{user.steamId}}</div>
                         <div class="users-page__user-links">
                             <a

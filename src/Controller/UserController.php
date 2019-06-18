@@ -145,41 +145,21 @@ class UserController extends BaseController
      */
     public function getUserProfile(User $user)
     {
-        //$activeEvents = $this->em->createQueryBuilder()
-        //    ->from(Event::class, 'event')
-        //    ->select('event')
-        //    ->join('event.entries', 'entry')
-        //    ->where('entry.player = :user')
-        //    ->andWhere('event.endedAt > :now')
-        //    ->setParameters([
-        //        'user' => $user,
-        //        'now' => new DateTime,
-        //    ])
-        //    ->getQuery()->getResult();
-
-        // verified play stats
-        $totalsData = $this->em->createQueryBuilder()
-            ->from(EventEntry::class, 'entry')
-            ->select(
-                'identity(entry.player) as player',
-                'sum(entry.achievementsCnt - entry.achievementsCntInitial) as achievements',
-                'sum(entry.playTime - entry.playTimeInitial) as playTime',
-                'count(distinct entry.game) as beaten'
-            )
+        /** @var Event[] $participatedEvents */
+        $participatedEvents = $this->em->createQueryBuilder()
+            ->from(Event::class, 'event')
+            ->select('event')
+            ->join('event.entries', 'entry')
             ->where('entry.player = :user')
-            ->andWhere('entry.playStatusVerified = true')
-            ->groupBy('player')
             ->setParameters([
-                'user' => $user,
+                'user' => $user
             ])
-            ->getQuery()->getScalarResult();
+            ->getQuery()->getResult();
 
         $totals = [];
-        if (isset($totalsData[0]))
-            $totals = $totalsData[0];
 
         // participated events
-        $totals['events'] = $this->em->createQueryBuilder()
+        $totals['events'] = (int)$this->em->createQueryBuilder()
             ->from(EventEntry::class, 'entry')
             ->select('COUNT(distinct event) as cnt')
             ->where('entry.player = :user')
@@ -191,7 +171,7 @@ class UserController extends BaseController
             ->groupBy('player')
             ->getQuery()->getSingleScalarResult();
 
-        $totals['entries'] = $this->em->createQueryBuilder()
+        $totals['entries'] = (int)$this->em->createQueryBuilder()
             ->from(EventEntry::class, 'entry')
             ->select('COUNT(entry) as cnt')
             ->where('entry.player = :user')
@@ -200,14 +180,42 @@ class UserController extends BaseController
             ])
             ->getQuery()->getSingleScalarResult();
 
-        $totals = array_map(function ($value) {
-            return (int)$value;
-        }, $totals);
+        // verified play stats
+        $totalsByEvent = $this->em->createQueryBuilder()
+            ->from(EventEntry::class, 'entry')
+            ->select(
+                //'identity(entry.player) as player',
+                'sum(CASE
+                            WHEN (entry.achievementsCntInitial is not null) THEN ( entry.achievementsCnt - entry.achievementsCntInitial )
+                            ELSE (entry.achievementsCnt)
+                        END) as achievements',
+                'sum(CASE
+                        WHEN (entry.playTimeInitial is not null) THEN ( entry.playTime - entry.playTimeInitial )
+                        ELSE (entry.playTime)
+                    END) as playTime',
+                'count(distinct entry.game) as beaten',
+                'identity(entry.event) as event'
+            )
+            ->where('entry.player = :user')
+            ->andWhere('entry.playStatusVerified = true')
+            ->groupBy('entry.event')
+            ->setParameters([
+                'user' => $user
+            ])
+            ->getQuery()->getResult();
+
+        foreach ($totalsByEvent as $key => $totalsDatum) {
+            $totalsByEvent[$key] = array_map(function ($value) {
+                return (int)$value;
+            }, $totalsDatum);
+        }
+
+        $totals['byEvent'] = $totalsByEvent;
 
         return $this->response([
             'totals' => $totals,
             'user' => $user,
-            //'activeEvents' => $activeEvents,
+            'events' => $participatedEvents,
         ]);
     }
 }

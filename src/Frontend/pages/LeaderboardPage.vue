@@ -39,7 +39,11 @@
                 >
                     <td class="leaderboard__td leaderboard__num">{{key+1}}</td>
                     <td class="leaderboard__td leaderboard__user">
-                        <div class="leaderboard__username">{{users[lbEntry.player].profileName}}</div>
+                        <div class="leaderboard__username">
+                            <router-link
+                                :to="{name: 'user_profile', params: {userId: lbEntry.player}}"
+                            >{{users[lbEntry.player].profileName}}</router-link>
+                        </div>
                         <div class="leaderboard__userlinks">
                             <a
                                 :href="'https://steamcommunity.com/profiles/'+users[lbEntry.player].steamId+'/'"
