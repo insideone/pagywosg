@@ -1,19 +1,26 @@
-var Encore = require('@symfony/webpack-encore');
+const
+    Encore = require('@symfony/webpack-encore'),
+    HtmlWebpackPlugin = require('html-webpack-plugin')
+;
 
 Encore
     .setOutputPath('public/build/')
+    .enableVersioning(Encore.isProduction())
     .setPublicPath('/build')
     .enableSingleRuntimeChunk()
-    //.disableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
-    //.enableSourceMaps(!Encore.isProduction())
     .enableSourceMaps(false)
     .addEntry('main', './src/Frontend/main.js')
-    // Enable Vue loader
     .enableVueLoader()
     .enableLessLoader()
+    .addPlugin(new HtmlWebpackPlugin({
+        title: 'Welcome!',
+        filename: '../index.html',
+        //favicon: '/favicon.png',
+        meta: {
+            viewport: 'width=940',
+        },
+    }))
 ;
 
-var config = Encore.getWebpackConfig();
-
-module.exports = config;
+module.exports = Encore.getWebpackConfig();

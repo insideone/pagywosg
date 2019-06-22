@@ -13,7 +13,7 @@
                 />
                 <span class="steam-login-block__name">{{user.profileName}}</span>
             </router-link>
-            <a :href="'/logout'" class="steam-login-block__btn-logout" title="Exit here"><i class="fas fa-sign-out-alt"></i></a>
+            <a :href="'/api/logout'" class="steam-login-block__btn-logout" title="Exit here"><i class="fas fa-sign-out-alt"></i></a>
         </template>
 
         <form v-else method="post" action="https://steamcommunity.com/openid/login">
@@ -46,7 +46,7 @@
             user: function(){
                 return this.$store.getters.getUser(this.userId);
             },
-            returnTo: () => global.location.origin + '/login'
+            returnTo: () => global.location.origin + '/api/login'
         }
     }
 </script>

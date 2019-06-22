@@ -11,6 +11,11 @@ import VueCookie from 'vue-cookie';
 
 Vue.use(VueCookie);
 
+const app = document.createElement('div');
+app.id = 'app';
+
+document.body.appendChild(app);
+
 new Vue({
     el: '#app',
     render: h => h(App),

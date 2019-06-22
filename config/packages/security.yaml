@@ -13,7 +13,7 @@ security:
             provider: steam_user_provider
             steam: true
             logout:
-              path:   /logout
+              path:   /api/logout
               target: /
               invalidate_session: true
             access_denied_handler: App\Security\AccessDeniedHandler

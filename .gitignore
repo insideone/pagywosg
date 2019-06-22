@@ -10,4 +10,5 @@
 
 /node_modules
 /public/build
+/public/index.html
 *.sql
