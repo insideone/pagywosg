@@ -10,7 +10,7 @@ Encore
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(false)
-    .addEntry('main', './src/Frontend/main.js')
+    .addEntry('main', './frontend/main.js')
     .enableVueLoader()
     .enableLessLoader()
     .addPlugin(new HtmlWebpackPlugin({
