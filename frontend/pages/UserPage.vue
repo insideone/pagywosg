@@ -21,7 +21,7 @@
                             target="_blank"
                         ><i class="icon-fa icon-fa--inline fab fa-steam-square"></i>Steam</a>
                         <a
-                            :href="'http://steamgifts.com/go/user/'+user.steamId"
+                            :href="`https://steamgifts.com/${user.sgProfileName ? 'user/'+user.sgProfileName : 'go/user/'+user.steamId}`"
                             class="profile__link"
                             target="_blank"
                         ><i class="icon-fa icon-fa--inline far fa-square"></i>Steamgifts</a>
@@ -30,7 +30,7 @@
                 <div class="profile__basic">
                     <div class="profile__name-block">
                         <div class="profile__name">{{user.profileName}}</div>
-                        <!--TODO: <div class="profile__steam-name">{{user.profileName}}</div>-->
+                        <div v-if="user.sgProfileName && user.profileName !== user.sgProfileName" class="profile__steam-name">{{user.sgProfileName}}</div>
                     </div>
                     <div class="profile__totals">
                         <div class="profile__heading">

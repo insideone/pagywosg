@@ -64,6 +64,13 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     protected $profileName;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=24)
+     * @Groups({"export"})
+     */
+    protected $sgProfileName;
+
+    /**
      * @var DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
@@ -198,6 +205,24 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     public function setProfileName(string $name)
     {
         $this->profileName = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSgProfileName(): string
+    {
+        return $this->sgProfileName;
+    }
+
+    /**
+     * @param string $sgProfileName
+     * @return User
+     */
+    public function setSgProfileName(string $sgProfileName): self
+    {
+        $this->sgProfileName = $sgProfileName;
+        return $this;
     }
 
     /**
