@@ -15,7 +15,8 @@ header "Re-building docker"
 docker-compose build
 
 header "Restarting"
-docker-compose restart
+docker-compose stop
+docker-compose up -d
 
 header "Updating backend"
 docker-compose exec backend composer up
