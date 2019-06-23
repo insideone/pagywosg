@@ -45,7 +45,7 @@ class LoadSteamGiftsNamesCommand extends BaseCommand
 
         $forceMode = !!$input->getOption('force');
 
-        $users = $this->em->getRepository(User::class)->findBy($forceMode ? [] : ['sgProfileName' => false]);
+        $users = $this->em->getRepository(User::class)->findBy($forceMode ? [] : ['sgProfileName' => null]);
 
         if (!$users) {
             $ss->success("All SteamGifts profile names were already loaded");
