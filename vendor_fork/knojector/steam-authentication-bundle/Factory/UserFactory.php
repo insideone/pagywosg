@@ -42,7 +42,9 @@ class UserFactory
         $user->setProfileState($userData['profilestate']);
         $user->setProfileName($userData['personaname']);
         $user->setLastLogOff($userData['lastlogoff']);
-        $user->setCommentPermission($userData['commentpermission']);
+        $user->setCommentPermission(
+            isset($userData['commentpermission']) ? $userData['commentpermission'] : null
+        );
         $user->setProfileUrl($userData['profileurl']);
         $user->setAvatar($userData['avatarfull']);
         $user->setPersonaState($userData['personastate']);
