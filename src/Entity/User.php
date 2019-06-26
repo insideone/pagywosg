@@ -248,7 +248,7 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
      */
     public function getCommentPermission(): int
     {
-        return $this->commentPermission;
+        return (int)$this->commentPermission;
     }
 
     /**
@@ -402,7 +402,9 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
         $this->setProfileState($userData['profilestate']);
         $this->setProfileName($userData['personaname']);
         $this->setLastLogOff($userData['lastlogoff']);
-        $this->setCommentPermission($userData['commentpermission']);
+        $this->setCommentPermission(
+            isset($userData['commentpermission']) ? $userData['commentpermission'] : null
+        );
         $this->setProfileUrl($userData['profileurl']);
         $this->setAvatar($userData['avatarfull']);
         $this->setPersonaState($userData['personastate']);
