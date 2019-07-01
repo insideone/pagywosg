@@ -21,6 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadSteamPlayStatsCommand extends BaseCommand
 {
+    const DEFAULT_UPDATE_DELAY = '1 hour';
+
     /** @var OwnedGamesApiProvider */
     protected $ownedGamesProvider;
 
@@ -47,7 +49,16 @@ class LoadSteamPlayStatsCommand extends BaseCommand
         $this->setName('steam:play-stats:load')
             ->getDefinition()
             ->setOptions([
-                new InputOption('all', null, InputOption::VALUE_OPTIONAL, '', false)
+                new InputOption(
+                    'all', null, InputOption::VALUE_OPTIONAL,
+                    "Update all entries despite the fact of how long they haven't been updated",
+                    false
+                ),
+                new InputOption(
+                    'delay', null, InputOption::VALUE_OPTIONAL,
+                    "How much time must pass before entry will need to be updated again",
+                    self::DEFAULT_UPDATE_DELAY
+                )
             ])
         ;
     }
@@ -62,12 +73,18 @@ class LoadSteamPlayStatsCommand extends BaseCommand
             //->andWhere('entry.verified = true')
             ->setParameter('now', new DateTime);
 
-        if (!$input->getOption('all')) {
-            $qb->andWhere($qb->expr()->orX(
-                'entry.refreshedAt is null',
-                'entry.refreshedAt <= :yesterday'
-            ))
-            ->setParameter('yesterday', new DateTime('-1 day'));
+        if ($input->getOption('all')) {
+            $this->ss->note('Fetching all entries');
+        } else {
+            $delay = $input->getOption('delay');
+            if ($delay) {
+                $this->ss->note("Fetching expired entries (delay: {$delay})");
+                $qb->andWhere($qb->expr()->orX(
+                    'entry.refreshedAt is null',
+                    'entry.refreshedAt <= :yesterday'
+                ))
+                    ->setParameter('yesterday', new DateTime("-{$delay}"));
+            }
         }
 
         /** @var EventEntry[] $entries */
@@ -110,17 +127,9 @@ class LoadSteamPlayStatsCommand extends BaseCommand
         }
         $playerGames = array_filter($playerGames);
 
-        try {
-            $this->updatePlaytime($playerGames, $entries);
-        } catch (GuzzleException|UnexpectedResponseException $e) {
-            $this->ss->error($e->getMessage());
-        }
-
-        try {
-            $this->updateAchievementsCount($entries);
-        } catch (GuzzleException|UnexpectedResponseException $e) {
-            $this->ss->error($e->getMessage());
-        }
+        $this
+            ->updatePlaytime($playerGames, $entries)
+            ->updateAchievementsCount($entries);
 
         $this->ss->note('Flushing all to database');
         $this->em->flush();
@@ -134,57 +143,58 @@ class LoadSteamPlayStatsCommand extends BaseCommand
     /**
      * @param array $playerGames
      * @param EventEntry[] $entries
-     * @throws GuzzleException
-     * @throws UnexpectedResponseException
+     * @return self
      */
-    protected function updatePlaytime(array $playerGames, array $entries): void
+    protected function updatePlaytime(array $playerGames, array $entries): self
     {
         if (!$playerGames) {
-            return;
+            return $this;
         }
 
         $this->ss->note('Updating playtime');
         $this->ss->progressStart(count($playerGames));
+
         foreach ($playerGames as $playerSteamId => $playerGameIds) {
             try {
                 $ownedGames = $this->ownedGamesProvider->fetch($playerSteamId, $playerGameIds);
-            } catch (Exception $e) {
-                $this->ss->error($e->getMessage());
-                continue;
-            }
 
-            $restGames = $playerGameIds;
+                $restGames = $playerGameIds;
 
-            foreach ($ownedGames as $ownedGame) {
-                $gameId = $ownedGame->getAppId();
-                $entryKey = $this->getEntryKey($playerSteamId, $gameId);
+                foreach ($ownedGames as $ownedGame) {
+                    $gameId = $ownedGame->getAppId();
+                    $entryKey = $this->getEntryKey($playerSteamId, $gameId);
 
-                $restGames = array_diff($restGames, [$gameId]);
+                    $restGames = array_diff($restGames, [$gameId]);
 
-                if (!isset($entries[$entryKey])) {
-                    continue;
+                    if (!isset($entries[$entryKey])) {
+                        continue;
+                    }
+
+                    $this->changelog->add(
+                        (new Change)
+                            ->setObject($entries[$entryKey])
+                            ->set('playTime', $entries[$entryKey]->getPlayTime(), $ownedGame->getPlaytimeForever())
+                    );
+
+                    $entries[$entryKey]->setPlayTime($ownedGame->getPlaytimeForever());
                 }
 
-                $this->changelog->add(
-                    (new Change)
-                        ->setObject($entries[$entryKey])
-                        ->set('playTime', $entries[$entryKey]->getPlayTime(), $ownedGame->getPlaytimeForever())
-                );
+                if ($restGames) {
+                    $this->updateFromRecentlyPlayed($playerSteamId, $entries, $restGames);
+                }
 
-                $entries[$entryKey]->setPlayTime($ownedGame->getPlaytimeForever());
+                if ($restGames) {
+                    $this->updateFromProfile($playerSteamId, $entries, $restGames);
+                }
+            } catch (GuzzleException|Exception $e) {
+                $this->ss->error($e->getMessage());
+            } finally {
+                $this->ss->progressAdvance();
             }
-
-            if ($restGames) {
-                $this->updateFromRecentlyPlayed($playerSteamId, $entries, $restGames);
-            }
-
-            if ($restGames) {
-                $this->updateFromProfile($playerSteamId, $entries, $restGames);
-            }
-
-            $this->ss->progressAdvance();
         }
+
         $this->ss->progressFinish();
+        return $this;
     }
 
     /**
@@ -228,51 +238,58 @@ class LoadSteamPlayStatsCommand extends BaseCommand
 
     /**
      * @param EventEntry[] $entries
-     * @throws GuzzleException
-     * @throws UnexpectedResponseException
+     * @return self
      */
-    protected function updateAchievementsCount(array $entries)
+    protected function updateAchievementsCount(array $entries): self
     {
         if (!$entries) {
-            return;
+            return $this;
         }
 
         $this->ss->note('Updating achievements count');
         $this->ss->progressStart(count($entries));
+
         foreach ($entries as $entry) {
-            $achievements = $this->playerAchievementsProvider->fetch(
-                $entry->getPlayer()->getSteamId(),
-                $entry->getGame()->getId()
-            );
+            try {
+                $achievements = $this->playerAchievementsProvider->fetch(
+                    $entry->getPlayer()->getSteamId(),
+                    $entry->getGame()->getId()
+                );
 
-            $game = $entry->getGame();
-            $gameAchievementsCnt = count($achievements);
+                $game = $entry->getGame();
+                $gameAchievementsCnt = count($achievements);
 
-            $this->changelog->add(
-                (new Change)
-                    ->setObject($game)
-                    ->set('achievementsCnt', $game->getAchievementsCnt(), $gameAchievementsCnt)
-            );
+                $this->changelog->add(
+                    (new Change)
+                        ->setObject($game)
+                        ->set('achievementsCnt', $game->getAchievementsCnt(), $gameAchievementsCnt)
+                );
 
-            // Updating total achievement count of the game on the go
-            $game->setAchievementsCnt(count($achievements));
+                // Updating total achievement count of the game on the go
+                $game->setAchievementsCnt(count($achievements));
 
-            $achievementsCnt = $achievements ? array_reduce(
-                $achievements,
-                function ($achievementsCnt, Achievement $achievement) {
-                    return $achievementsCnt + ($achievement->isAchieved() ? 1 : 0);
-                }
-            ) : 0;
+                $achievementsCnt = $achievements ? array_reduce(
+                    $achievements,
+                    function ($achievementsCnt, Achievement $achievement) {
+                        return $achievementsCnt + ($achievement->isAchieved() ? 1 : 0);
+                    }
+                ) : 0;
 
-            $this->changelog->add(
-                (new Change)
-                    ->setObject($entry)
-                    ->set('achievementsCnt', $entry->getAchievementsCnt(), $achievementsCnt)
-            );
+                $this->changelog->add(
+                    (new Change)
+                        ->setObject($entry)
+                        ->set('achievementsCnt', $entry->getAchievementsCnt(), $achievementsCnt)
+                );
 
-            $entry->setAchievementsCnt($achievementsCnt);
-            $this->ss->progressAdvance();
+                $entry->setAchievementsCnt($achievementsCnt);
+            } catch (GuzzleException|Exception $e) {
+                $this->ss->error($e->getMessage());
+            } finally {
+                $this->ss->progressAdvance();
+            }
         }
+
         $this->ss->progressFinish();
+        return $this;
     }
 }

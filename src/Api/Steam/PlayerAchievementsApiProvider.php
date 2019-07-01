@@ -38,8 +38,20 @@ class PlayerAchievementsApiProvider extends JsonResponseApiProvider
 
     protected function getEssenceValue($response)
     {
-        if (isset($response['playerstats']['error']) && $response['playerstats']['error'] === 'Requested app has no stats')
+        $appHasNoStats =
+            isset($response['playerstats']['error']) &&
+            $response['playerstats']['error'] === 'Requested app has no stats'
+        ;
+
+        $appHasNoAchievements =
+            isset($response['playerstats']['success']) &&
+            $response['playerstats']['success'] &&
+            !isset($response['playerstats']['achievements'])
+        ;
+
+        if ($appHasNoStats || $appHasNoAchievements) {
             return [];
+        }
 
         return $response['playerstats']['achievements'];
     }
