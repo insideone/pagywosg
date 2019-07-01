@@ -136,6 +136,12 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     protected $roles = [];
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $email;
+
+    /**
      * @return int
      */
     public function getId(): ?int
@@ -493,5 +499,23 @@ class User implements SteamUserInterface, UserInterface, IdentityProvider
     public function isAdmin()
     {
         return $this->hasRole(RoleEnum::ADMIN);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return User
+     */
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
     }
 }

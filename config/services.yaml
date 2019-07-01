@@ -106,3 +106,7 @@ services:
 
     Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter:
         alias: serializer.name_converter.camel_case_to_snake_case
+
+    App\EventListener\MailerListener:
+        arguments:
+            $emailFrom: '%default_email_from%'

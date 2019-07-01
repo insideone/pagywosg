@@ -8,6 +8,8 @@ use App\Entity\EventEntry;
 use App\Entity\GameCategory;
 use App\Entity\Leaderboard;
 use App\Framework\Controller\BaseController;
+use App\Framework\Exceptions\UserCantBeNotifiedException;
+use App\Notify\Email\UnlockedEmail;
 use App\Security\Permission\EventPermission;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -15,6 +17,8 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EventController extends BaseController
@@ -24,8 +28,14 @@ class EventController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function getList(Request $request)
+    public function getList(Request $request, MailerInterface $mailer)
     {
+        try {
+            $mailer->send(new UnlockedEmail($this->getUser()));
+        } catch (UserCantBeNotifiedException|TransportExceptionInterface $e) {
+            return $this->exceptionResponse($e);
+        }
+
         $inputFilter = $request->get('filter');
 
         $filter = [];
