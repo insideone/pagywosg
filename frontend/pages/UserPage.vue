@@ -6,6 +6,11 @@
             mode="loading"
         />
 
+        <messagebox
+            v-else-if="!user"
+            mode="error"
+        >User not found</messagebox>
+
         <template v-else>
             <div class="profile__top">
                 <div class="profile__pic">
@@ -97,6 +102,7 @@
     import {mapActions, mapGetters} from 'vuex';
     import Messagebox from "../components/Messagebox";
     import EventStats from "../components/EventStats";
+    import preciseTime from "../services/preciseTime";
 
     export default {
         name: "UserPage",
@@ -124,11 +130,14 @@
             totalPlayStats: function () {
                 let totalPlaytime = 0, totalAchievements = 0, totalBeaten = 0;
 
-                this.totals.byEvent.forEach(eventTotal => {
-                    totalPlaytime += eventTotal.playTime;
-                    totalAchievements += eventTotal.achievements;
-                    totalBeaten += eventTotal.beaten;
-                });
+                if (this.totals.byEvent)
+                {
+                    this.totals.byEvent.forEach(eventTotal => {
+                        totalPlaytime += eventTotal.playTime;
+                        totalAchievements += eventTotal.achievements;
+                        totalBeaten += eventTotal.beaten;
+                    });
+                }
 
                 return {
                     playTime: totalPlaytime,
@@ -142,10 +151,7 @@
             },
 
             totalPlayTimePrecise: function () {
-                let hours = parseInt(this.totalPlayStats.playTime / 60);
-                let minutes = parseInt(this.totalPlayStats.playTime % 60);
-
-                return `${hours}h ${minutes}m`;
+                return preciseTime(this.totalPlayStats.playTime);
             }
         },
         methods: {

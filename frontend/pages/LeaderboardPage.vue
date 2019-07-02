@@ -112,6 +112,7 @@
 
 <script>
     import Messagebox from "../components/Messagebox";
+    import preciseTime from "../services/preciseTime";
 
     import {mapGetters} from 'vuex';
 
@@ -153,13 +154,12 @@
 
                 this.leaderboard.forEach((item) => {
                     total.achievements += item.achievements;
-                    total.hours += item.hours;
                     total.minutes += item.minutes;
                     total.beaten += item.beaten;
                 });
 
                 total.achievements = total.achievements.toFixed(0);
-                total.hours = total.hours.toFixed(1);
+                total.hours = (total.minutes / 60).toFixed(1);
                 total.minutes = total.minutes.toFixed(0);
                 total.beaten = total.beaten.toFixed(0);
 
@@ -190,10 +190,7 @@
         },
         methods: {
             calcPreciseTime(value) {
-                let hours = parseInt(value / 60);
-                let minutes = parseInt(value % 60);
-
-                return `${hours}h ${minutes}m`;
+                return preciseTime(value);
             }
         }
     }

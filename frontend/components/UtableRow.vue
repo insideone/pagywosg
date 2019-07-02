@@ -351,6 +351,7 @@
     import Messagebox from "./Messagebox";
     import marked from 'marked';
     import { mapActions } from 'vuex'
+    import preciseTime from "../services/preciseTime";
 
     export default {
         name: "UtableRow",
@@ -468,10 +469,7 @@
             },
 
             calcPreciseTime(value) {
-                let hours = parseInt(value / 60);
-                let minutes = parseInt(value % 60);
-
-                return `${hours}h ${minutes}m`;
+                return preciseTime(value);
             },
 
             submitEdits() {

@@ -47,6 +47,8 @@
 </template>
 
 <script>
+    import preciseTime from "../services/preciseTime";
+
     export default {
         name: "EventStats",
         props: {
@@ -82,10 +84,7 @@
             },
 
             precisePlaytime: function () {
-                let hours = parseInt(this.stats.playTime / 60);
-                let minutes = parseInt(this.stats.playTime % 60);
-
-                return `${hours}h ${minutes}m`;
+                return preciseTime(this.stats.playTime);
             }
         },
     }
