@@ -11,7 +11,7 @@
                     :alt="user.profileName"
                     class="steam-login-block__img"
                 />
-                <span class="steam-login-block__name">{{user.profileName}}</span>
+                <span class="steam-login-block__name">{{user.sgProfileName ? user.sgProfileName : user.profileName}}</span>
             </router-link>
             <a :href="'/api/logout'" class="steam-login-block__btn-logout" title="Exit here"><i class="fas fa-sign-out-alt"></i></a>
         </template>

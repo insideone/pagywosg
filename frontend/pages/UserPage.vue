@@ -7,7 +7,7 @@
         />
 
         <messagebox
-            v-else-if="!user"
+            v-else-if="!user.id"
             mode="error"
         >User not found</messagebox>
 
@@ -45,11 +45,11 @@
 
                         <div class="profile__total">
                             <div class="profile__total-param">Event entries</div>
-                            <div class="profile__total-value">{{+totals.entries}}</div>
+                            <div class="profile__total-value">{{totals.entries? +totals.entries : '&mdash;'}}</div>
                         </div>
                         <div class="profile__total">
                             <div class="profile__total-param">Events participated</div>
-                            <div class="profile__total-value">{{+totals.events}}</div>
+                            <div class="profile__total-value">{{totals.events? +totals.events : '&mdash;'}}</div>
                         </div>
                         <div class="profile__total">
                             <div class="profile__total-param">Achievements taken in all events</div>

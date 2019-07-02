@@ -159,7 +159,7 @@ class UserController extends BaseController
         $totals = [];
 
         // participated events
-        $totals['events'] = (int)$this->em->createQueryBuilder()
+        $totalEvents = $this->em->createQueryBuilder()
             ->from(EventEntry::class, 'entry')
             ->select('COUNT(distinct event) as cnt')
             ->where('entry.player = :user')
@@ -169,16 +169,21 @@ class UserController extends BaseController
             ->join('entry.event', 'event')
             ->join('entry.player', 'player')
             ->groupBy('player')
-            ->getQuery()->getSingleScalarResult();
+            ->getQuery()->getResult();
+        // if user never participated, the result is empty, and getSingleScalarResult() throws error.
 
-        $totals['entries'] = (int)$this->em->createQueryBuilder()
+        $totals['events'] = (int)reset($totalEvents)['cnt'];
+
+        $totalEntries = $this->em->createQueryBuilder()
             ->from(EventEntry::class, 'entry')
             ->select('COUNT(entry) as cnt')
             ->where('entry.player = :user')
             ->setParameters([
                 'user' => $user,
             ])
-            ->getQuery()->getSingleScalarResult();
+            ->getQuery()->getResult();
+
+        $totals['entries'] = (int)reset($totalEntries)['cnt'];
 
         // verified play stats
         $totalsByEvent = $this->em->createQueryBuilder()

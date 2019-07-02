@@ -376,9 +376,10 @@
                         let
                             user = this.getUser(entry.player),
                             hasFitName = user.profileName.toLowerCase().indexOf(this.filter.player.toLowerCase()) !== -1,
+                            hasFitSGName = user.sgProfileName.toLowerCase().indexOf(this.filter.player.toLowerCase()) !== -1,
                             hasFitSteamId = user.steamId.toString() === this.filter.player.toString();
 
-                        if (!(hasFitName || hasFitSteamId)) {
+                        if (!(hasFitName || hasFitSGName || hasFitSteamId)) {
                             return false;
                         }
                     }

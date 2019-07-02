@@ -38,7 +38,7 @@ class EventController extends BaseController
         }
 
         /** @var Event[] $events */
-        $events = $this->em->getRepository(Event::class)->findBy($filter, ['id' => 'asc']);
+        $events = $this->em->getRepository(Event::class)->findBy($filter, ['id' => 'desc']);
         $events = array_combine(array_map(function(Event $e) { return $e->getId(); }, $events), $events);
 
         $qb = $this->em->createQueryBuilder();

@@ -8,7 +8,7 @@
                 <div class="utable__player utable__col-player">
                     <router-link
                         :to="{name: 'user_profile', params: {userId: player.id}}"
-                    >{{player.profileName}}</router-link>
+                    >{{player.sgProfileName ? player.sgProfileName : player.profileName}}</router-link>
                 </div>
                 <a
                     :href="'https://store.steampowered.com/app/'+game.id+'/'"

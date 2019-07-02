@@ -35,6 +35,7 @@
                             <router-link
                                 :to="{name: 'user_profile', params: {userId: user.id}}"
                             >{{user.profileName}}</router-link>
+                            <div class="users-page__sg-username" title="Username on SteamGifts">{{user.sgProfileName}}</div>
                         </div>
                         <div class="users-page__userid">{{user.steamId}}</div>
                         <div class="users-page__user-links">
@@ -146,6 +147,11 @@
         &__username{
             font-size: 15px;
             margin-bottom: 4px;
+        }
+        
+        &__sg-username{
+            color: @color-blue;
+            margin: 4px 0;
         }
 
         &__userid{

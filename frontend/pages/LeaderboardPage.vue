@@ -35,14 +35,18 @@
                 <tr
                     v-for="(lbEntry, key) in leaderboard"
                     :key="'lb_'+key"
-                    :class="{'leaderboard__tr-inactive': (lbEntry.beaten <= 0)}"
+                    :class="{
+                        'leaderboard__tr-inactive': (lbEntry.beaten <= 0),
+                        'leaderboard__tr-mine': loggedUserId === users[lbEntry.player].id
+                    }"
                 >
                     <td class="leaderboard__td leaderboard__num">{{key+1}}</td>
                     <td class="leaderboard__td leaderboard__user">
                         <div class="leaderboard__username">
                             <router-link
                                 :to="{name: 'user_profile', params: {userId: lbEntry.player}}"
-                            >{{users[lbEntry.player].profileName}}</router-link>
+                            >{{users[lbEntry.player].sgProfileName ?
+                                users[lbEntry.player].sgProfileName : users[lbEntry.player].profileName}}</router-link>
                         </div>
                         <div class="leaderboard__userlinks">
                             <a
@@ -129,7 +133,8 @@
         computed: {
             ...mapGetters({
                 leaderboard: 'getLeaderboard',
-                showTemplate: 'isReadingAnyUserAllowed'
+                showTemplate: 'isReadingAnyUserAllowed',
+                loggedUserId: 'getLoggedUserId'
             }),
 
             eventId: function () {
@@ -174,7 +179,8 @@
                     if (lbEntry.beaten <= 0)
                         return true;
 
-                    let userName = this.users[lbEntry.player].profileName;
+                    let user = this.users[lbEntry.player];
+                    let userName = user.sgProfileName ? user.sgProfileName : user.profileName;
 
                     mdTemplate += `${userName} | ${+lbEntry.achievements} | ${+lbEntry.hours} | ${+lbEntry.beaten}\n`;
                 });

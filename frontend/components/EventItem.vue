@@ -22,7 +22,7 @@
                     <i class="icon-fa icon-fa--golden fas fa-star"></i>
                     <router-link
                         :to="{name: 'user_profile', params: {userId: host.id}}"
-                    >{{host.profileName}}</router-link>
+                    >{{host.sgProfileName ? host.sgProfileName : host.profileName}}</router-link>
                 </div>
             </div>
         </div>
