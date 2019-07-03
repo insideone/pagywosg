@@ -373,10 +373,13 @@
             eventEntries: function () {
                 return this.$store.getters.getEventEntries(this.event.entries).filter(entry => {
                     if (this.filter.player) {
+                        let lowerCaseFilteredName = this.filter.player.toLowerCase();
+
                         let
                             user = this.getUser(entry.player),
-                            hasFitName = user.profileName.toLowerCase().indexOf(this.filter.player.toLowerCase()) !== -1,
-                            hasFitSGName = user.sgProfileName.toLowerCase().indexOf(this.filter.player.toLowerCase()) !== -1,
+                            hasFitName = user.profileName.toLowerCase().indexOf(lowerCaseFilteredName) !== -1,
+                            hasFitSGName = user.sgProfileName ?
+                                user.sgProfileName.toLowerCase().indexOf(lowerCaseFilteredName) !== -1 : false,
                             hasFitSteamId = user.steamId.toString() === this.filter.player.toString();
 
                         if (!(hasFitName || hasFitSGName || hasFitSteamId)) {
