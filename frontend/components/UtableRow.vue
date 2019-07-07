@@ -117,13 +117,20 @@
                     >
                         <i class="icon-fa icon-fa--inline fas fa-gamepad"></i>Game verified
                     </div>
-                    <a
-                        v-else-if="updateVerificationAllowed"
-                        @click.prevent="setVerify('verified')"
-                        class="utable__link-control"
-                    >
-                        <i class="icon-fa icon-fa--inline fas fa-gamepad"></i>Verify game
-                    </a>
+                    <div v-else-if="updateVerificationAllowed">
+                        <a
+                            v-if="player.sgProfileName"
+                            :href="sgWinCheckLink"
+                            class="utable__link-control"
+                            target="_blank"
+                        ><i class="icon-fa icon-fa--inline fas fa-question-circle"></i>Check win on SG</a>
+                        <br />
+                        <a
+                            @click.prevent="setVerify('verified')"
+                            class="utable__link-control"
+                        ><i class="icon-fa icon-fa--inline fas fa-gamepad"></i>Verify game</a>
+                    </div>
+
 
                     <template v-if="eventEntry.playStatus !== 'unfinished'">
                         <div
@@ -423,6 +430,12 @@
             },
             updateVerificationAllowed: function () {
                 return this.$store.getters.isUpdatingVerificationForTheEntryAllowed(this.eventEntry.id);
+            },
+            sgWinCheckLink: function () {
+                let gameName = encodeURIComponent(this.game.name.toLowerCase());
+                let sgName = this.player.sgProfileName;
+
+                return `https://www.steamgifts.com/user/${sgName}/giveaways/won/search?q=${gameName}`;
             }
         },
         data: function () {
