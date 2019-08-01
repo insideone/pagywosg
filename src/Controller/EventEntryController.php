@@ -37,7 +37,7 @@ class EventEntryController extends BaseController
             return $this->errorResponse("This isn't entry from requested event");
         }
 
-        if (!$event->isActive()) {
+        if (!$event->isActive() && !$this->getUser()->isAdmin()) {
             return $this->errorResponse("This event isn't active at this moment");
         }
 
