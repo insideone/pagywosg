@@ -88,6 +88,27 @@
                             `
                     },
                     {
+						id: 'dlc',
+						question: 'Can I submit a DLC I have won?',
+						answer: `
+								 Yes. If either the DLC or the base game for that DLC is part of the theme you can submit that. Please submit the base game (you can not submit DLC at all on the site) and leave a note on the submission that you have won the DLC, so I will know when checking if the game was indeed a SG win. 
+							`
+					},
+                    {
+						id: 'unfinished_game',
+						question: 'Can I submit a game I have played before the start of the month?',
+						answer: `
+								As long as the game is not 95 or so percent finished, sure go ahead but please fill in the starting achievements/playtime. You can see how to do that <a href="#participate">here</a>.
+								`
+					},
+					{
+						id: 'late_submission',
+						question: 'I finished a game this month that is perfect for the theme without submitting it beforehand. Can I submit it anyways?',
+						answer: `
+								Sure! It doesn't matter if you submit the game after it was already completed or before as long as it was played that month.
+								`
+					},
+                    {
                         id: 'bug_suggestion',
                         question: 'I think I found a bug/I have a suggestion for the website! What should I do?',
                         answer: `

@@ -4,7 +4,7 @@
         <div class="text">
             <p>The "Play a game you won on SteamGifts" event focuses on playing games that fit a community choosen theme every month.</p>
 
-            <div style="text-align:center;padding-top:20px;"><h1><a href="https://www.steamgifts.com/discussion/MESdN/" target="_blank">July's event thread</a></h1></div>
+            <div style="text-align:center;padding-top:20px;"><h1><a href="https://www.steamgifts.com/discussion/Eh2Uk/" target="_blank">August's event thread</a></h1></div>
 
             <div>
              <h3>Previous months:</h3>
@@ -14,7 +14,8 @@
                     <a href="https://www.steamgifts.com/discussion/aAWch/" target="_blank">March</a> - 
                     <a href="https://www.steamgifts.com/discussion/EgU2T/" target="_blank">April</a> - 
                     <a href="https://www.steamgifts.com/discussion/BuklI/" target="_blank">May</a> - 
-                    <a href="https://www.steamgifts.com/discussion/GGIZ7/" target="_blank">June</a>
+                    <a href="https://www.steamgifts.com/discussion/GGIZ7/" target="_blank">June</a> -
+                    <a href="https://www.steamgifts.com/discussion/MESdN/" target="_blank">July</a>
                 </p>
                 <p>2018:
                    <a href="https://www.steamgifts.com/discussion/mBMUY/" target="_blank">January</a> - 
