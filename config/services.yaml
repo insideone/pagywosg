@@ -53,6 +53,8 @@ services:
 
     GuzzleHttp\Client:
 
+    Goutte\Client:
+
     App\Command\:
         resource: '../src/Command/*.php'
         calls:
