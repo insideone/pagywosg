@@ -29,7 +29,7 @@
                 </router-link>
                 <router-link
                     v-if="eventEditAllowed"
-                    :to="{name: 'event_edit', params: {eventId: eventId}}"
+                    :to="{name: 'event_name_edit', params: {eventId: eventId, eventName: urlEventName}}"
                 >
                     <i class="icon-fa icon-fa--inline fas fa-pencil-alt"></i>Edit
                 </router-link>
@@ -47,7 +47,7 @@
 
                 </div>
                 <router-link
-                    :to="{name: 'user_profile', params: {userId: host.id}}"
+                    :to="{name: 'user_profile_name', params: {userId: host.id, userName: urlHostName}}"
                     class="event-detail__host"
                     title="The creator of this event"
                 >
@@ -92,7 +92,7 @@
 
             <div class="event-detail__links">
                 <router-link
-                    :to="{name: 'event_leaderboard', params: {eventId: eventId}}"
+                    :to="{name: 'event_name_leaderboard', params: {eventId: eventId, eventName: urlEventName}}"
                     class="button"
                 >
                     <i class="icon-fa icon-fa--inline fas fa-crown"></i>
@@ -451,6 +451,14 @@
             },
             eventUnlocksCompiled: function () {
                 return this.renderMarkdown(this.event.unlocks);
+            },
+
+            urlEventName: function () {
+                return this.$urlify(this.event.name);
+            },
+
+            urlHostName: function () {
+                return this.$urlify(this.host.sgProfileName ? this.host.sgProfileName : this.host.profileName);
             }
         },
         created () {
@@ -458,7 +466,20 @@
                 this.$store.dispatch('fetchEvent', this.eventId),
                 this.$store.dispatch('fetchPlayStatuses')
             ])
-                .then()
+                .then(() => {
+                    if (this.$route.params.eventName !== this.urlEventName)
+                    {
+                        this.$router.replace({
+                            name: 'event_detail_name',
+                            params: {
+                                eventID: this.event.id,
+                                eventName: this.urlEventName
+                            },
+                            query: this.$route.query
+                        });
+                    }
+
+                })
                 .catch((e) => {
                     this.errorText = e;
                 })
