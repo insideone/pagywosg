@@ -37,10 +37,16 @@ const appRouter = new Router({
             meta: {title: 'Create a New Event'}
         },
         {
-            name: 'event_detail',
-            path: '/events/:eventId',
-            component: EventPage,
-            meta: {title: 'Event Details'}
+            name: 'event_leaderboard',
+            path: '/events/:eventId/leaderboard',
+            component: LeaderboardPage,
+            meta: {title: 'Event Leaderboard'}
+        },
+        {
+            name: 'event_name_leaderboard',
+            path: '/events/:eventId/:eventName/leaderboard',
+            component: LeaderboardPage,
+            meta: {title: 'Event Leaderboard'}
         },
         {
             name: 'event_edit',
@@ -49,10 +55,22 @@ const appRouter = new Router({
             meta: {title: 'Event Details'}
         },
         {
-            name: 'event_leaderboard',
-            path: '/events/:eventId/leaderboard',
-            component: LeaderboardPage,
-            meta: {title: 'Event Leaderboard'}
+            name: 'event_name_edit',
+            path: '/events/:eventId/:eventName/edit',
+            component: NewEventPage,
+            meta: {title: 'Event Details'}
+        },
+        {
+            name: 'event_detail',
+            path: '/events/:eventId',
+            component: EventPage,
+            meta: {title: 'Event Details'}
+        },
+        {
+            name: 'event_detail_name',
+            path: '/events/:eventId/:eventName',
+            component: EventPage,
+            meta: {title: 'Event Details'}
         },
         {
             name: 'users',
@@ -63,6 +81,12 @@ const appRouter = new Router({
         {
             name: 'user_profile',
             path: '/user/:userId',
+            component: UserPage,
+            meta: {title: 'User Profile'}
+        },
+        {
+            name: 'user_profile_name',
+            path: '/user/:userId/:userName',
             component: UserPage,
             meta: {title: 'User Profile'}
         },

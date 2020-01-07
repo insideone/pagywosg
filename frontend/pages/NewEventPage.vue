@@ -199,6 +199,9 @@
             },
             compiledUnlocks() {
                 return this.renderMarkdown(this.event.unlocks);
+            },
+            urlEventName() {
+                return this.$urlify(this.event.name);
             }
         },
         created() {
@@ -236,7 +239,7 @@
             submitForm() {
                 this.sendEvent(this.event).then(({id: eventId}) => {
                     // redirecting to event page
-                    this.$router.push({name: 'event_detail', params: {eventId}});
+                    this.$router.push({name: 'event_detail_name', params: {eventId, eventName: this.urlEventName}});
                 })
                     .catch(e => {
                         this.errors = e.response.data.errors ? e.response.data.errors : [{message: e}];

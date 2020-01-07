@@ -7,7 +7,7 @@
                 <div class="utable__num utable__col-num">{{i+1}}</div>
                 <div class="utable__player utable__col-player">
                     <router-link
-                        :to="{name: 'user_profile', params: {userId: player.id}}"
+                        :to="{name: 'user_profile_name', params: {userId: player.id, userName: urlPlayerName}}"
                     >{{player.sgProfileName ? player.sgProfileName : player.profileName}}</router-link>
                 </div>
                 <a
@@ -406,6 +406,9 @@
             },
             player: function () {
                 return this.$store.getters.getUser(this.eventEntry.player);
+            },
+            urlPlayerName: function () {
+                return this.$urlify(this.player.sgProfileName ? this.player.sgProfileName : this.player.profileName)
             },
             game: function () {
                 return this.$store.getters.getGame(this.eventEntry.game)

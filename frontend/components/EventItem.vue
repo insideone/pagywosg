@@ -4,7 +4,10 @@
         @click="goToEventDetail(event.id, $event)"
     >
         <div class="event-item__top-line">
-            <div class="event-item__title">{{event.name}}</div>
+            <router-link
+                :to="{name: 'event_detail_name', params: {eventId: event.id, eventName: urlEventName}}"
+                class="event-item__title"
+            >{{event.name}}</router-link>
             <div class="event-item__params">
                 <div class="event-item__dates">
                     <i class="icon-fa fas fa-calendar-alt"></i>
@@ -21,7 +24,7 @@
                 <div class="event-item__host" title="The name of the creator of this event">
                     <i class="icon-fa icon-fa--golden fas fa-star"></i>
                     <router-link
-                        :to="{name: 'user_profile', params: {userId: host.id}}"
+                        :to="{name: 'user_profile_name', params: {userId: host.id, userName: urlHostName}}"
                     >{{host.sgProfileName ? host.sgProfileName : host.profileName}}</router-link>
                 </div>
             </div>
@@ -59,7 +62,8 @@
                         id: 0,
                         profileName: '',
                         avatar: '',
-                        steamId: ''
+                        steamId: '',
+                        sgProfileName: ''
                     }
                 }
             }
@@ -68,7 +72,13 @@
             return {};
         },
         computed: {
+            urlEventName: function () {
+                return this.$urlify(this.event.name);
+            },
 
+            urlHostName: function () {
+                return this.$urlify(this.host.sgProfileName ? this.host.sgProfileName : this.host.profileName)
+            }
         },
         methods: {
             goToEventDetail(eventId, $event){
@@ -105,6 +115,7 @@
 
         &__top-line{
             display: flex;
+            margin-bottom: 8px;
         }
         
         &__params{
@@ -116,9 +127,15 @@
         }
 
         &__title{
+            display: block;
             font-size: 22px;
             color: @color-dark-blue;
             flex-grow: 1;
+            text-decoration: none;
+            
+            &:hover{
+                text-decoration: underline;
+            }
         }
 
         &__dates{

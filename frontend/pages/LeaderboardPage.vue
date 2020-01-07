@@ -8,7 +8,7 @@
         />
 
         <template v-else>
-            <router-link :to="{name: 'event_detail', params: {eventId: eventId}}" class="lb-page__event-title">
+            <router-link :to="{name: 'event_detail_name', params: {eventId: eventId, eventName: urlEventName}}" class="lb-page__event-title">
                 <i class="icon-fa icon-fa--inline fas fa-crown"></i>{{event.name}}
             </router-link>
 
@@ -45,7 +45,7 @@
                         <td class="leaderboard__td leaderboard__user">
                             <div class="leaderboard__username">
                                 <router-link
-                                    :to="{name: 'user_profile', params: {userId: lbEntry.player}}"
+                                    :to="{name: 'user_profile_name', params: {userId: lbEntry.player, userName: getUrlUserNameById(lbEntry.player)}}"
                                 >{{users[lbEntry.player].sgProfileName ?
                                     users[lbEntry.player].sgProfileName : users[lbEntry.player].profileName}}</router-link>
                             </div>
@@ -75,8 +75,8 @@
                         <td class="leaderboard__td">
                             <router-link
                                 :to="{
-                                    name: 'event_detail',
-                                    params: {eventId: event.id},
+                                    name: 'event_detail_name',
+                                    params: {eventId: event.id, eventName: urlEventName},
                                     query: {
                                         player: users[lbEntry.player].steamId,
                                         status: 'b_c'
@@ -159,6 +159,10 @@
                 return this.$store.getters.getEvent(this.eventId);
             },
 
+            urlEventName: function () {
+                return this.$urlify(this.event.name);
+            },
+
             users: function () {
                 return this.$store.getters.getUsers();
             },
@@ -227,7 +231,12 @@
         methods: {
             calcPreciseTime(value) {
                 return preciseTime(value);
-            }
+            },
+
+            getUrlUserNameById: function (userId) {
+                let user = this.users[userId];
+                return this.$urlify(user.sgProfileName ? user.sgProfileName : user.profileName);
+            },
         }
     }
 </script>

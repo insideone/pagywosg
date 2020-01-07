@@ -11,6 +11,9 @@ import VueCookie from 'vue-cookie';
 
 Vue.use(VueCookie);
 
+import urlifyPlugin from './services/urlify';
+Vue.use(urlifyPlugin);
+
 const app = document.createElement('div');
 app.id = 'app';
 

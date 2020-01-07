@@ -160,7 +160,24 @@
             })
         },
         created() {
-            this.doFetchUserProfile(this.userId).finally(() => this.isLoading = false)
+            this.doFetchUserProfile(this.userId)
+                .then(() => {
+
+                    let urlName = this.$urlify(this.user.sgProfileName ? this.user.sgProfileName : this.user.profileName);
+
+                    if (this.$route.params.userName !== urlName)
+                    {
+                        this.$router.replace({
+                            name: 'user_profile_name',
+                            params: {
+                                userId: this.user.id,
+                                userName: urlName
+                            }
+                        });
+                    }
+
+                })
+                .finally(() => this.isLoading = false)
         }
     }
 </script>

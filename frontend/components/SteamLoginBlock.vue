@@ -3,7 +3,7 @@
 
         <template v-if="userId">
             <router-link
-                :to="{name: 'user_profile', params: {userId: user.id}}"
+                :to="{name: 'user_profile_name', params: {userId: user.id, userName: urlUserName}}"
                 class="steam-login-block__user"
             >
                 <img
@@ -45,6 +45,9 @@
             },
             user: function(){
                 return this.$store.getters.getUser(this.userId);
+            },
+            urlUserName: function() {
+                return this.$urlify(this.user.sgProfileName ? this.user.sgProfileName : this.user.profileName);
             },
             returnTo: () => global.location.origin + '/api/login'
         }

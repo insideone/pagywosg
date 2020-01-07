@@ -33,7 +33,7 @@
                     <td>
                         <div class="users-page__username">
                             <router-link
-                                :to="{name: 'user_profile', params: {userId: user.id}}"
+                                :to="{name: 'user_profile_name', params: {userId: user.id, userName: getUrlUserName(user)}}"
                             >{{user.profileName}}</router-link>
                             <div class="users-page__sg-username" title="Username on SteamGifts">{{user.sgProfileName}}</div>
                         </div>
@@ -128,7 +128,10 @@
                     roleId,
                     active: user.roles.indexOf(role.name) !== -1
                 }).then(() => this.isUpdating = false)
-            }
+            },
+            getUrlUserName: function (user) {
+                return this.$urlify(user.sgProfileName ? user.sgProfileName : user.profileName);
+            },
         }
     }
 </script>

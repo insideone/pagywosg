@@ -1,7 +1,7 @@
 <template>
     <div class="event-stats">
         <router-link
-            :to="{name: 'event_detail', params: {eventId: event.id}}"
+            :to="{name: 'event_detail_name', params: {eventId: event.id, eventName: urlEventName}}"
             class="event-stats__title"
         >{{event.name}}</router-link>
         <div class="event-stats__dates">
@@ -12,7 +12,7 @@
         <div class="event-stats__items">
             <div class="event-stats__overall">
                 <router-link
-                    :to="{name: 'event_detail', params: {eventId: event.id}, query: {player: userSteamId}}"
+                    :to="{name: 'event_detail_name', params: {eventId: event.id, eventName: urlEventName}, query: {player: userSteamId}}"
                 >
                     <i class="icon-fa icon-fa--inline fas fa-stream"></i>See all player's participation
                 </router-link>
@@ -32,8 +32,8 @@
             <div class="event-stats__item">
                 <router-link
                     :to="{
-                        name: 'event_detail',
-                         params: {eventId: event.id},
+                        name: 'event_detail_name',
+                         params: {eventId: event.id, eventName: urlEventName},
                          query: { player: userSteamId, status: 'b_c' }
                      }"
                     class="event-stats__number event-stats__number--link"
@@ -85,6 +85,10 @@
 
             precisePlaytime: function () {
                 return preciseTime(this.stats.playTime);
+            },
+
+            urlEventName: function () {
+                return this.$urlify(this.event.name);
             }
         },
     }
