@@ -279,12 +279,7 @@ class EventEntry implements IdentityProvider
      */
     public function setPlayTime(?int $playTime): EventEntry
     {
-        if ($this->playTime === null && $this->playTimeInitial === null) {
-            $this->setPlayTimeInitial($playTime);
-        }
-
         $this->playTime = $playTime;
-
         return $this;
     }
 
@@ -320,12 +315,7 @@ class EventEntry implements IdentityProvider
      */
     public function setAchievementsCnt(?int $achievementsCnt): EventEntry
     {
-        if ($this->achievementsCnt === null && $this->achievementsCntInitial === null) {
-            $this->setAchievementsCntInitial($achievementsCnt);
-        }
-
         $this->achievementsCnt = $achievementsCnt;
-
         return $this;
     }
 
