@@ -209,7 +209,7 @@
             },
 
             eligiblePeopleList: function() {
-                let peopleListTemplate = '';
+                let peopleListTemplateStrings = [];
 
                 this.leaderboard.forEach((lbEntry) => {
                     if (lbEntry.beaten <= 0)
@@ -218,10 +218,12 @@
                     let user = this.users[lbEntry.player];
                     let userName = user.sgProfileName ? user.sgProfileName : '';
 
-                    peopleListTemplate += `${userName} - ${user.steamId}\n`;
+                    peopleListTemplateStrings.push(`${userName} - ${user.steamId}\n`);
                 });
 
-                return peopleListTemplate;
+                peopleListTemplateStrings = peopleListTemplateStrings.sort();
+
+                return peopleListTemplateStrings.join('');
             }
         },
         created() {
