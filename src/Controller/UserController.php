@@ -204,6 +204,7 @@ class UserController extends BaseController
             ->where('entry.player = :user')
             ->andWhere('entry.playStatusVerified = true')
             ->groupBy('entry.event')
+            ->orderBy('identity(entry.event)', 'DESC')
             ->setParameters([
                 'user' => $user
             ])
