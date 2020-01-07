@@ -65,7 +65,13 @@ export default new Vuex.Store({
 
             leaderboard.sort((a, b) => {
                 if (a.hours === b.hours)
-                    return 0;
+                {
+                    if (a.beaten === b.beaten )
+                        return 0;
+
+                    return (a.beaten > b.beaten) ? -1 : 1;
+                }
+
                 return (a.hours > b.hours) ? -1 : 1;
             });
 

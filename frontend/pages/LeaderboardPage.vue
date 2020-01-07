@@ -16,7 +16,7 @@
                 <table class="leaderboard lb-page__main-table">
                     <tr>
                         <th class="leaderboard__th leaderboard__num">#</th>
-                        <th class="leaderboard__th">
+                        <th class="leaderboard__th leaderboard__th--user">
                             <i class="icon-fa icon-fa--inline fas fa-user"></i>
                             Username
                         </th>
@@ -87,7 +87,7 @@
                     </tr>
                     <tr>
                         <td class="leaderboard__td leaderboard__total-num">Total:</td>
-                        <td class="leaderboard__td leaderboard__total">{{leaderboard.length}} people</td>
+                        <td class="leaderboard__td leaderboard__total">{{totalStats.users}} people</td>
                         <td class="leaderboard__td leaderboard__total">{{totalStats.achievements}}</td>
                         <td class="leaderboard__td leaderboard__total">
                             <span
@@ -172,13 +172,17 @@
                     achievements: 0,
                     hours: 0,
                     minutes: 0,
-                    beaten: 0
+                    beaten: 0,
+                    users: 0
                 };
 
                 this.leaderboard.forEach((item) => {
                     total.achievements += item.achievements;
                     total.minutes += item.minutes;
                     total.beaten += item.beaten;
+
+                    if (item.beaten > 0)
+                        total.users++;
                 });
 
                 total.achievements = total.achievements.toFixed(0);
