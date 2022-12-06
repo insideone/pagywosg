@@ -27,7 +27,7 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "normalizr": "^3.3.0",
-    "qs": "^6.7.0",
+    "qs": "^6.7.3",
     "vue-cookie": "^1.1.4"
   }
 }
