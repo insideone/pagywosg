@@ -52,8 +52,15 @@ services:
             $dirs: ['%schemas_directory%/', '%schemas_directory%/types/']
 
     GuzzleHttp\Client:
+        class: GuzzleHttp\Client
+        arguments:
+            - verify_peer: false
+              verify_host: false
 
     Goutte\Client:
+        calls:
+            - method: setClient
+              arguments: [ '@GuzzleHttp\Client' ]
 
     App\Command\:
         resource: '../src/Command/*.php'

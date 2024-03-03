@@ -14,24 +14,28 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "composer/package-versions-deprecated": "1.11.99.5",
+        "doctrine/common": "^2",
+        "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-fixtures-bundle": "^3.1",
+        "doctrine/doctrine-migrations-bundle": "^2",
+        "doctrine/orm": "^2",
         "fabpot/goutte": "^3.2",
         "fresh/doctrine-enum-bundle": "^6.3",
-        "fxp/security-bundle": "dev-master",
-        "fxp/doctrine-extra": "dev-master",
         "fxp/doctrine-extensions": "dev-master",
+        "fxp/doctrine-extra": "dev-master",
+        "fxp/security-bundle": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
         "knojector/steam-authentication-bundle": "dev-master",
         "opis/json-schema": "^1.0",
         "sensio/framework-extra-bundle": "^5.3",
         "symfony-bundles/json-request-bundle": "^2.0",
         "symfony/console": "4.3.*",
-        "symfony/debug-pack": "^1.0",
         "symfony/dotenv": "4.3.*",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "4.3.*",
         "symfony/lock": "4.3.*",
-        "symfony/orm-pack": "^1.0",
+        "symfony/monolog-bundle": "^3.0",
         "symfony/property-info": "4.3.*",
         "symfony/security-bundle": "4.3.*",
         "symfony/serializer": "4.3.*",
@@ -43,7 +47,10 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {

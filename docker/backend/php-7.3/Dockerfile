@@ -54,7 +54,7 @@ RUN docker-php-ext-configure bcmath --enable-bcmath \
 
 # ICU - intl requirements for Symfony
 # Debian is out of date, and Symfony expects the latest - so build from source, unless a better alternative exists(?)
-RUN curl -sS -o /tmp/icu.tar.gz -L http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz \
+RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-58-3/icu4c-58_3-src.tgz \
 	&& tar -zxf /tmp/icu.tar.gz -C /tmp \
 	&& cd /tmp/icu/source \
 	&& ./configure --prefix=/usr/local \
@@ -111,11 +111,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/bin \
     --filename=composer \
   && composer self-update
-
-RUN mkdir -p $COMPOSER_HOME/cache \
-  && composer global require "hirak/prestissimo:^0.3" \
-  && rm -rf $COMPOSER_HOME/cache \
-  && mkdir -p $COMPOSER_HOME/cache
 
 RUN rm -rf /var/lib/apt/lists/*
 
